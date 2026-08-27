@@ -1,0 +1,367 @@
+08.28 12:47 AM
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>abuzar . Khan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg-deep:#170f1c;
+    --sunset-orange:#ff8a4c;
+    --sunset-gold:#f4b860;
+    --rose-mauve:#c97b8e;
+    --cream:#fdf3e7;
+    --ink:#2a1a1f;
+    --glass-bg: rgba(30, 18, 24, 0.52);
+    --glass-border: rgba(255, 230, 200, 0.28);
+    --safe-w: min(92vw, 440px);
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{
+    min-height:100vh;
+    background:var(--bg-deep);
+    font-family:'Poppins', sans-serif;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:20px 0;
+    gap:24px;
+  }
+  .scene-bg{
+    position:fixed; inset:0;
+    background: radial-gradient(circle at top, #4a2233 0%, #170f1c 70%);
+    pointer-events:none;
+    z-index:-1;
+  }
+
+  .topbar{
+    display:flex; align-items:center; justify-content:center;
+  }
+  .live-wrap{
+    display:flex; align-items:center; gap:8px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.14);
+    backdrop-filter:blur(10px);
+    padding:6px 16px;
+    border-radius:999px;
+    font-size:12px;
+    color:var(--cream);
+  }
+  .live-dot{
+    width:8px; height:8px; border-radius:50%;
+    background:#22c55e;
+    box-shadow:0 0 8px #22c55e;
+  }
+
+  .upload-box{
+    width:var(--safe-w);
+    background:rgba(255, 255, 255, 0.04);
+    border:1px dashed var(--sunset-gold);
+    backdrop-filter:blur(10px);
+    border-radius:16px;
+    padding:12px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .upload-btn{
+    background:linear-gradient(135deg, var(--sunset-gold), var(--sunset-orange));
+    border:none; color:var(--ink);
+    padding:8px 16px; border-radius:10px;
+    font-weight:600; font-size:12px; cursor:pointer;
+    flex-shrink:0;
+  }
+  .file-info{ font-size:11px; color:var(--cream); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+  .player{
+    width:var(--safe-w);
+    background:var(--glass-bg);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(20px);
+    border-radius:24px;
+    padding:20px;
+    box-shadow:0 14px 40px rgba(0,0,0,0.5);
+  }
+  .player-top{ display:flex; align-items:center; gap:14px; }
+  .art{
+    width:52px; height:52px; border-radius:12px;
+    background:linear-gradient(135deg, var(--sunset-orange), var(--rose-mauve));
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .art.playing svg{ animation:spin 4s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .art svg{ width:24px; height:24px; color:#fff; }
+
+  .meta{ min-width:0; flex:1; }
+  .meta .title{
+    color:var(--cream);
+    font-size:15px; font-weight:600;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .meta .artist{
+    color:rgba(253,243,231,0.6);
+    font-size:12px;
+    margin-top:2px;
+  }
+
+  .prog-row{
+    display:flex; align-items:center; gap:10px;
+    margin-top:16px;
+  }
+  .t{ font-size:11px; color:rgba(253,243,231,0.65); width:32px; font-variant-numeric:tabular-nums; }
+  .t.end{ text-align:right; }
+  .bar{
+    flex:1; height:6px; border-radius:99px;
+    background:rgba(255,255,255,0.16);
+    position:relative; cursor:pointer;
+  }
+  .bar-fill{
+    height:100%; width:0%;
+    background:linear-gradient(90deg, var(--sunset-gold), var(--sunset-orange));
+    border-radius:99px;
+  }
+
+  .controls-row{
+    display:flex; align-items:center; justify-content:center;
+    gap:26px;
+    margin-top:16px;
+  }
+  .track-btn{
+    background:none; border:none; color:var(--cream);
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+    opacity:0.8; transition:opacity 0.2s;
+  }
+  .track-btn:hover{ opacity:1; }
+  .track-btn svg{ width:28px; height:28px; }
+
+  .ctl.play{
+    width:50px; height:50px; border-radius:50%;
+    background:linear-gradient(135deg, var(--sunset-gold), var(--sunset-orange));
+    color:var(--ink);
+    box-shadow:0 4px 18px rgba(255,138,76,0.45);
+    border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .ctl.play svg{ width:22px; height:22px; }
+</style>
+</head>
+<body>
+
+<div class="scene-bg"></div>
+<audio id="mainAudio" preload="metadata"></audio>
+
+<div class="topbar">
+  <div class="live-wrap">
+    <span class="live-dot"></span>
+    <span id="trackBadge">No Songs Added</span>
+  </div>
+</div>
+
+<!-- UPLOAD BUTTON -->
+<div class="upload-box">
+  <input type="file" id="audioFile" accept="audio/*" style="display:none;" onchange="handleFileUpload()">
+  <div class="file-info" id="statusText">Gaana select ya add karein</div>
+  <button class="upload-btn" onclick="document.getElementById('audioFile').click()">+ Add Song</button>
+</div>
+
+<!-- PLAYER -->
+<div class="player">
+  <div class="player-top">
+    <div class="art" id="artIcon">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+    </div>
+    <div class="meta">
+      <div class="title" id="trackTitle">No Song Loaded</div>
+      <div class="artist" id="trackArtist">Permanent Player</div>
+    </div>
+  </div>
+
+  <div class="prog-row">
+    <span class="t" id="curTime">0:00</span>
+    <div class="bar" id="progBar"><div class="bar-fill" id="progFill"></div></div>
+    <span class="t end" id="durTime">0:00</span>
+  </div>
+
+  <div class="controls-row">
+    <!-- Previous Track -->
+    <button class="track-btn" onclick="prevSong()" title="Previous Song">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+    </button>
+
+    <!-- Play/Pause -->
+    <button class="ctl play" id="playBtn" onclick="togglePlay()" aria-label="Play/Pause">
+      <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+
+    <!-- Next Track -->
+    <button class="track-btn" onclick="nextSong()" title="Next Song">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm9-12v12h2V6h-2z"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  let db;
+  let songsList = [];
+  let currentIndex = 0;
+  let currentBlobUrl = null;
+
+  const audio = document.getElementById('mainAudio');
+  const playBtn = document.getElementById('playBtn');
+  const playIcon = document.getElementById('playIcon');
+  const progBar = document.getElementById('progBar');
+  const progFill = document.getElementById('progFill');
+  const curTimeEl = document.getElementById('curTime');
+  const durTimeEl = document.getElementById('durTime');
+  const trackTitle = document.getElementById('trackTitle');
+  const trackArtist = document.getElementById('trackArtist');
+  const trackBadge = document.getElementById('trackBadge');
+  const artIcon = document.getElementById('artIcon');
+  const statusText = document.getElementById('statusText');
+
+  const req = indexedDB.open("MusicPlayerDB", 1);
+  req.onupgradeneeded = (e) => {
+    const db = e.target.result;
+    if(!db.objectStoreNames.contains("tracks")){
+      db.createObjectStore("tracks", { keyPath: "id", autoIncrement: true });
+    }
+  };
+  req.onsuccess = (e) => {
+    db = e.target.result;
+    loadAllSongs();
+  };
+
+  function loadAllSongs(){
+    const tx = db.transaction("tracks", "readonly");
+    const store = tx.objectStore("tracks");
+    const getAll = store.getAll();
+
+    getAll.onsuccess = () => {
+      songsList = getAll.result || [];
+      if(songsList.length > 0){
+        loadSongByIndex(0, false);
+      }
+    };
+  }
+
+  function handleFileUpload(){
+    const fileInput = document.getElementById('audioFile');
+    const file = fileInput.files[0];
+    if(!file) return;
+
+    statusText.textContent = "Song save ho raha hai...";
+
+    const songData = {
+      name: file.name.replace(/\.[^/.]+$/, ""),
+      fileBlob: file
+    };
+
+    const tx = db.transaction("tracks", "readwrite");
+    const store = tx.objectStore("tracks");
+    store.add(songData);
+
+    tx.oncomplete = () => {
+      statusText.textContent = "Song permanently add ho gaya!";
+      fileInput.value = "";
+      
+      const refreshTx = db.transaction("tracks", "readonly");
+      refreshTx.objectStore("tracks").getAll().onsuccess = (e) => {
+        songsList = e.target.result || [];
+        loadSongByIndex(songsList.length - 1, true);
+      };
+    };
+  }
+
+  function loadSongByIndex(idx, autoPlay = true){
+    if(songsList.length === 0) return;
+    if(idx >= songsList.length) idx = 0;
+    if(idx < 0) idx = songsList.length - 1;
+
+    currentIndex = idx;
+    const song = songsList[currentIndex];
+
+    if(currentBlobUrl) URL.revokeObjectURL(currentBlobUrl);
+    currentBlobUrl = URL.createObjectURL(song.fileBlob);
+
+    audio.src = currentBlobUrl;
+    trackTitle.textContent = song.name;
+    trackArtist.textContent = `Song ${currentIndex + 1} of ${songsList.length}`;
+    trackBadge.textContent = `Track ${currentIndex + 1} / ${songsList.length}`;
+
+    if(autoPlay){
+      audio.play().catch(()=>{});
+    }
+  }
+
+  function nextSong(){
+    if(songsList.length === 0) return;
+    loadSongByIndex(currentIndex + 1, true);
+  }
+
+  function prevSong(){
+    if(songsList.length === 0) return;
+    loadSongByIndex(currentIndex - 1, true);
+  }
+
+  function togglePlay(){
+    if(!audio.src && songsList.length > 0){
+      loadSongByIndex(0, true);
+      return;
+    }
+    if(!audio.src) return;
+
+    if(audio.paused){
+      audio.play();
+    } else {
+      audio.pause();
+    }
+  }
+
+  function fmt(sec){
+    if(!isFinite(sec) || sec < 0) return "0:00";
+    const m = Math.floor(sec/60);
+    const s = Math.floor(sec%60).toString().padStart(2,'0');
+    return `${m}:${s}`;
+  }
+
+  audio.addEventListener('play', ()=>{
+    playIcon.innerHTML = '<rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect>';
+    artIcon.classList.add('playing');
+  });
+
+  audio.addEventListener('pause', ()=>{
+    playIcon.innerHTML = '<path d="M8 5v14l11-7z"></path>';
+    artIcon.classList.remove('playing');
+  });
+
+  audio.addEventListener('timeupdate', ()=>{
+    if(audio.duration){
+      const percent = (audio.currentTime / audio.duration) * 100;
+      progFill.style.width = percent + '%';
+      curTimeEl.textContent = fmt(audio.currentTime);
+      durTimeEl.textContent = fmt(audio.duration);
+    }
+  });
+
+  audio.addEventListener('ended', nextSong);
+
+  progBar.addEventListener('click', (e)=>{
+    const rect = progBar.getBoundingClientRect();
+    const ratio = (e.clientX - rect.left) / rect.width;
+    if(audio.duration){
+      audio.currentTime = ratio * audio.duration;
+    }
+  });
+</script>
+</body>
+</html>
+
