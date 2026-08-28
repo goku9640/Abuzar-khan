@@ -3,28 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>abuzar . Khan</title>
+<title>abuzar . Khan - Music</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- Firebase Scripts -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <style>
   :root{
-    --sunset-orange:#ff8a4c;
-    --sunset-gold:#f4b860;
-    --cream:#ffffff;
-    --ios-glass: rgba(20, 14, 28, 0.45);
+    --sunset-orange: #ff8a4c;
+    --sunset-gold: #f4b860;
+    --sunset-glow: rgba(255, 138, 76, 0.45);
+    --cream: #ffffff;
+    --ios-glass: rgba(20, 14, 28, 0.55);
     --ios-glass-btn: rgba(255, 255, 255, 0.12);
     --ios-glass-border: rgba(255, 255, 255, 0.22);
     --ios-highlight: rgba(255, 255, 255, 0.45);
     --safe-w: min(92vw, 420px);
   }
 
-  *{ box-sizing:border-box; margin:0; padding:0; }
+  *{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color: transparent; }
 
   body{
     min-height:100vh;
@@ -33,26 +34,24 @@
     flex-direction:column;
     align-items:center;
     justify-content:flex-start;
-    padding:70px 0 36px;
+    padding:70px 0 40px;
     position:relative;
     overflow-y:auto;
-    background: linear-gradient(180deg, rgba(10,5,15,0.25) 0%, rgba(10,5,15,0.8) 75%, rgba(10,5,15,0.96) 100%),
+    background: linear-gradient(180deg, rgba(10,5,15,0.3) 0%, rgba(10,5,15,0.85) 75%, rgba(10,5,15,0.98) 100%),
                 url('https://i.postimg.cc/L4G45cGW/file-0000000058ec8211a0f84031c053e7b6.png') center top / cover no-repeat fixed;
+    color: #fff;
   }
 
-  /* YouTube IFrame hidden safely behind background */
   #ytPlayerContainer {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 200px;
-    height: 200px;
+    top: 0; left: 0;
+    width: 200px; height: 200px;
     z-index: -999;
     opacity: 0.001;
     pointer-events: none;
   }
 
-  /* Top Bar */
+  /* Top Navigation Bar */
   .top-header{
     position: absolute;
     top: 16px;
@@ -60,67 +59,36 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    z-index: 10;
-    gap: 8px;
+    z-index: 20;
   }
 
-  .top-actions{
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
-
-  .top-btn{
+  .icon-btn{
     background: var(--ios-glass-btn);
     border: 1px solid var(--ios-glass-border);
     backdrop-filter: blur(28px) saturate(190%);
     -webkit-backdrop-filter: blur(28px) saturate(190%);
     color: var(--cream);
-    padding: 7px 14px;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
     cursor: pointer;
     box-shadow: 0 4px 20px rgba(0,0,0,0.25), inset 0 1px 1px var(--ios-highlight);
-    transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: transform 0.15s ease, background 0.2s ease;
   }
-  .top-btn:active{ transform: scale(0.94); background: rgba(255,255,255,0.2); }
-  .top-btn svg{ width:13px; height:13px; }
-
-  .download-apk-btn{
-    background: linear-gradient(135deg, rgba(244,184,96,0.85), rgba(255,138,76,0.85));
-    border: 1px solid rgba(255,255,255,0.35);
-    backdrop-filter: blur(28px);
-    -webkit-backdrop-filter: blur(28px);
-    color: #111;
-    font-weight: 600;
-    padding: 7px 14px;
-    border-radius: 999px;
-    font-size: 11px;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    box-shadow: 0 6px 20px rgba(255, 138, 76, 0.35), inset 0 1px 1px #fff;
-    transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-  .download-apk-btn:active{ transform: scale(0.94); }
-  .download-apk-btn svg{ width:13px; height:13px; }
+  .icon-btn:active{ transform: scale(0.92); background: rgba(255,255,255,0.22); }
+  .icon-btn svg{ width: 20px; height: 20px; }
 
   .live-badge{
     display:flex; align-items:center; gap:6px;
     background: var(--ios-glass-btn);
     border: 1px solid var(--ios-glass-border);
-    backdrop-filter: blur(28px) saturate(190%);
-    -webkit-backdrop-filter: blur(28px) saturate(190%);
-    padding: 7px 12px;
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    padding: 7px 14px;
     border-radius: 999px;
     font-size: 11px;
     color: var(--cream);
-    white-space: nowrap;
+    font-weight: 500;
     box-shadow: 0 4px 20px rgba(0,0,0,0.25), inset 0 1px 1px var(--ios-highlight);
   }
   .live-dot{
@@ -129,33 +97,171 @@
     box-shadow:0 0 10px #22c55e;
   }
 
-  /* Direct URL Input Bar Card */
+  /* Slide-out Left Drawer / Menu */
+  .drawer-overlay{
+    position: fixed;
+    top:0; left:0; width:100vw; height:100vh;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .drawer-overlay.open{ opacity: 1; visibility: visible; }
+
+  .drawer{
+    position: fixed;
+    top: 0; left: 0;
+    width: min(82vw, 320px);
+    height: 100vh;
+    background: rgba(18, 12, 24, 0.92);
+    border-right: 1px solid var(--ios-glass-border);
+    backdrop-filter: blur(36px) saturate(200%);
+    -webkit-backdrop-filter: blur(36px) saturate(200%);
+    z-index: 101;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 18px;
+    box-shadow: 10px 0 40px rgba(0,0,0,0.7);
+  }
+  .drawer.open{ transform: translateX(0); }
+
+  .drawer-profile{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .drawer-avatar{
+    width: 48px; height: 48px; border-radius: 50%;
+    background: url('https://i.postimg.cc/L4G45cGW/file-0000000058ec8211a0f84031c053e7b6.png') center top / cover;
+    border: 2px solid var(--sunset-gold);
+    box-shadow: 0 0 15px rgba(244,184,96,0.3);
+  }
+  .drawer-name{ font-size: 14px; font-weight: 600; color: #fff; }
+  .drawer-sub{ font-size: 11px; color: var(--sunset-gold); }
+
+  .drawer-section-title{
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.45);
+    margin: 20px 0 8px 6px;
+    text-transform: uppercase;
+  }
+
+  .drawer-item{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--cream);
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+  .drawer-item:hover, .drawer-item.active{
+    background: rgba(255, 138, 76, 0.18);
+    border: 1px solid rgba(255, 138, 76, 0.35);
+    color: var(--sunset-gold);
+  }
+  .drawer-item svg{ width: 18px; height: 18px; flex-shrink: 0; }
+  .drawer-badge{
+    margin-left: auto;
+    font-size: 10px;
+    background: rgba(255,255,255,0.12);
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .drawer-footer{
+    margin-top: auto;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .app-download-card{
+    background: linear-gradient(135deg, rgba(244,184,96,0.2), rgba(255,138,76,0.2));
+    border: 1px solid var(--sunset-gold);
+    padding: 12px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
+  }
+  .app-download-card:active{ transform: scale(0.97); }
+
+  /* Add Song / URL Bar Card */
   .url-card{
     width: var(--safe-w);
     background: var(--ios-glass);
     border: 1px solid var(--ios-glass-border);
     backdrop-filter: blur(32px) saturate(180%);
     -webkit-backdrop-filter: blur(32px) saturate(180%);
-    border-radius: 18px;
-    padding: 10px;
+    border-radius: 20px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 1px 1px var(--ios-highlight);
+  }
+  .url-input-row{
     display: flex;
     gap: 8px;
-    margin-bottom: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 1px 1px var(--ios-highlight);
   }
   .url-input{
     flex: 1;
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.15);
     border-radius: 12px;
-    padding: 8px 12px;
+    padding: 9px 12px;
     color: #fff;
     font-size: 12px;
     font-family: inherit;
     outline: none;
   }
-  .url-input::placeholder{ color: rgba(255,255,255,0.5); }
+  .url-input::placeholder{ color: rgba(255,255,255,0.45); }
   .url-input:focus{ border-color: var(--sunset-gold); }
+
+  .url-options-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .privacy-toggle{
+    display: flex;
+    background: rgba(255,255,255,0.08);
+    border-radius: 99px;
+    padding: 2px;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .privacy-opt{
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-size: 10.5px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.7);
+    transition: all 0.2s;
+  }
+  .privacy-opt.active{
+    background: linear-gradient(135deg, var(--sunset-gold), var(--sunset-orange));
+    color: #111;
+    font-weight: 600;
+  }
 
   .url-submit-btn{
     background: linear-gradient(135deg, var(--sunset-gold), var(--sunset-orange));
@@ -163,15 +269,15 @@
     color: #111;
     font-weight: 600;
     font-size: 11px;
-    padding: 0 14px;
+    padding: 8px 14px;
     border-radius: 12px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(255,138,76,0.3);
+    box-shadow: 0 4px 15px var(--sunset-glow);
     transition: transform 0.15s ease;
   }
   .url-submit-btn:active{ transform: scale(0.94); }
 
-  /* iOS Frosted Glass Music Card */
+  /* Music Player Card */
   .player{
     width:var(--safe-w);
     background: var(--ios-glass);
@@ -179,20 +285,42 @@
     backdrop-filter: blur(32px) saturate(180%);
     -webkit-backdrop-filter: blur(32px) saturate(180%);
     border-radius: 28px;
-    padding: 22px;
+    padding: 20px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 1px var(--ios-highlight);
     margin-bottom: 14px;
   }
-  .player-top{ display:flex; align-items:center; gap:14px; }
+  .player-top{ display:flex; align-items:center; gap:14px; position:relative; }
+
+  /* Album Art Disc with Neon Pulse Aura */
+  .art-wrapper{
+    position: relative;
+    width: 60px; height: 60px;
+    flex-shrink: 0;
+  }
+  .art-aura{
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--sunset-orange), transparent 70%);
+    opacity: 0;
+    filter: blur(8px);
+    transition: opacity 0.4s ease;
+  }
+  .art-aura.active{ opacity: 0.9; animation: auraPulse 2s infinite ease-in-out; }
+  @keyframes auraPulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
 
   .art{
-    width:56px; height:56px; border-radius:50%;
+    width: 100%; height: 100%; border-radius:50%;
     background:url('https://i.postimg.cc/L4G45cGW/file-0000000058ec8211a0f84031c053e7b6.png') center top / cover no-repeat;
     border: 2px solid var(--ios-glass-border);
-    flex-shrink:0;
-    box-shadow:0 8px 24px rgba(0,0,0,0.4), inset 0 1px 2px #fff;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4), inset 0 1px 2px #fff;
   }
-  .art.playing{ animation:spin 8s linear infinite; }
+  .art.playing{ animation: spin 9s linear infinite; }
   @keyframes spin{ to{ transform:rotate(360deg); } }
 
   .meta{ min-width:0; flex:1; }
@@ -206,11 +334,36 @@
     color:rgba(255,255,255,0.65);
     font-size:11px;
     margin-top:2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
+  .tag-badge{
+    font-size: 9.5px;
+    padding: 1px 6px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.12);
+  }
+  .tag-badge.public{ background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+  .tag-badge.private{ background: rgba(244, 184, 96, 0.2); color: var(--sunset-gold); }
+
+  .like-btn{
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: color 0.2s, transform 0.15s;
+  }
+  .like-btn.liked{ color: #ff4757; }
+  .like-btn:active{ transform: scale(1.25); }
+  .like-btn svg{ width: 20px; height: 20px; }
 
   .prog-row{
     display:flex; align-items:center; gap:10px;
-    margin-top:16px;
+    margin-top:14px;
   }
   .t{ font-size:11px; color:rgba(255,255,255,0.65); width:32px; font-variant-numeric:tabular-nums; }
   .t.end{ text-align:right; }
@@ -228,10 +381,20 @@
   }
 
   .controls-row{
-    display:flex; align-items:center; justify-content:center;
-    gap:28px;
-    margin-top:18px;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 0 6px;
+    margin-top:16px;
   }
+  .ctrl-mini{
+    background: none; border: none;
+    color: rgba(255,255,255,0.55);
+    cursor: pointer; padding: 6px;
+    transition: all 0.2s;
+  }
+  .ctrl-mini.active{ color: var(--sunset-gold); }
+  .ctrl-mini:active{ transform: scale(0.9); }
+  .ctrl-mini svg{ width: 18px; height: 18px; }
+
   .track-btn{
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.12);
@@ -259,6 +422,7 @@
   .ctl.play:active{ transform: scale(0.92); }
   .ctl.play svg{ width:22px; height:22px; }
 
+  /* Playlist Card & Search Filter */
   .playlist-card{
     width:var(--safe-w);
     background: var(--ios-glass);
@@ -277,13 +441,35 @@
     padding-bottom:10px;
     border-bottom:1px solid rgba(255,255,255,0.08);
   }
+  
+  .search-filter-box{
+    margin-top: 10px;
+    position: relative;
+  }
+  .search-input{
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 7px 10px 7px 30px;
+    color: #fff;
+    font-size: 11.5px;
+    font-family: inherit;
+    outline: none;
+  }
+  .search-input:focus{ border-color: rgba(244,184,96,0.5); }
+  .search-icon{
+    position: absolute; left: 9px; top: 50%; transform: translateY(-50%);
+    width: 14px; height: 14px; color: rgba(255,255,255,0.4);
+  }
+
   .song-list{
     list-style:none;
     margin-top:10px;
     display:flex;
     flex-direction:column;
     gap:8px;
-    max-height:180px;
+    max-height:200px;
     overflow-y:auto;
   }
   .song-item{
@@ -294,7 +480,7 @@
     border: 1px solid rgba(255,255,255,0.08);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    padding: 10px 12px;
+    padding: 9px 12px;
     border-radius: 12px;
     cursor: pointer;
     position: relative;
@@ -306,18 +492,33 @@
     border: 1px solid rgba(255, 138, 76, 0.4);
     border-left: 3px solid var(--sunset-gold);
   }
+  .song-info{
+    display: flex;
+    flex-direction: column;
+    max-width: 74%;
+  }
   .song-name{
     font-size:12px;
     color:var(--cream);
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    max-width:78%;
+  }
+  .song-subtag{
+    font-size: 9.5px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+  }
+
+  .song-actions{
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
 
   .menu-btn{
     background:none; border:none; color:var(--cream);
-    opacity:0.75; cursor:pointer; padding:4px 8px;
+    opacity:0.75; cursor:pointer; padding:4px 6px;
     display:flex; align-items:center; justify-content:center;
     border-radius:6px;
   }
@@ -329,21 +530,21 @@
     position:absolute;
     right:10px;
     top:36px;
-    background: rgba(20, 12, 26, 0.95);
+    background: rgba(20, 12, 26, 0.96);
     border: 1px solid var(--ios-glass-border);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     box-shadow: 0 12px 32px rgba(0,0,0,0.8), inset 0 1px 1px var(--ios-highlight);
-    border-radius: 12px;
+    border-radius: 14px;
     z-index: 99;
-    min-width: 130px;
+    min-width: 155px;
     overflow: hidden;
   }
   .dropdown-menu.show{ display:block; }
   .dropdown-item{
     padding:10px 12px;
-    font-size:12px;
-    color:#ff6b6b;
+    font-size:11.5px;
+    color: var(--cream);
     background:none;
     border:none;
     width:100%;
@@ -353,7 +554,9 @@
     gap:8px;
     cursor:pointer;
   }
-  .dropdown-item:hover{ background:rgba(255,107,107,0.2); }
+  .dropdown-item:hover{ background:rgba(255,255,255,0.1); }
+  .dropdown-item.delete{ color:#ff6b6b; }
+  .dropdown-item.delete:hover{ background:rgba(255,107,107,0.2); }
   .dropdown-item svg{ width:14px; height:14px; }
 
   .empty-msg{
@@ -367,7 +570,7 @@
     display:none;
     text-align:center;
     margin-bottom:8px;
-    background:rgba(0,0,0,0.5);
+    background:rgba(0,0,0,0.6);
     padding:6px 14px;
     border-radius:20px;
     backdrop-filter:blur(12px);
@@ -380,40 +583,104 @@
 <div id="ytPlayerContainer"><div id="ytPlayer"></div></div>
 <input type="file" id="audioFile" accept="audio/*" style="display:none;" onchange="uploadAudioCloud(event)">
 
-<!-- Top Navigation Bar -->
-<div class="top-header">
-  <div class="top-actions">
-    <button class="top-btn" onclick="document.getElementById('audioFile').click()" title="Upload File">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-      <span>File</span>
-    </button>
-    <a href="app.apk" download id="downloadAppBtn" class="download-apk-btn">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
-      <span>Get App</span>
-    </a>
+<!-- Left Slide-out Drawer Overlay & Container -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
+<div class="drawer" id="sideDrawer">
+  <div class="drawer-profile">
+    <div class="drawer-avatar"></div>
+    <div>
+      <div class="drawer-name">Abuzar Khan</div>
+      <div class="drawer-sub">Pro Music Player</div>
+    </div>
   </div>
-  <div class="live-badge">
-    <span class="live-dot"></span>
-    <span id="trackBadge">0 Songs</span>
+
+  <div class="drawer-section-title">Playlists & Libraries</div>
+  <button class="drawer-item active" id="tab-all" onclick="switchPlaylistFilter('all')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+    <span>All Tracks</span>
+    <span class="drawer-badge" id="badge-all">0</span>
+  </button>
+  <button class="drawer-item" id="tab-public" onclick="switchPlaylistFilter('public')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+    <span>Public Cloud</span>
+    <span class="drawer-badge" id="badge-public">0</span>
+  </button>
+  <button class="drawer-item" id="tab-private" onclick="switchPlaylistFilter('private')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+    <span>Private (Only Me)</span>
+    <span class="drawer-badge" id="badge-private">0</span>
+  </button>
+  <button class="drawer-item" id="tab-liked" onclick="switchPlaylistFilter('liked')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    <span>Liked Songs</span>
+    <span class="drawer-badge" id="badge-liked">0</span>
+  </button>
+
+  <div class="drawer-section-title">Quick Actions</div>
+  <button class="drawer-item" onclick="document.getElementById('audioFile').click(); toggleDrawer();">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+    <span>Upload Local File</span>
+  </button>
+
+  <div class="drawer-footer">
+    <a href="app.apk" download id="downloadAppBtn" class="app-download-card">
+      <div>
+        <div style="font-size:12px; font-weight:600; color:var(--sunset-gold);">Download Android App</div>
+        <div style="font-size:10px; opacity:0.75;">Install APK for phone</div>
+      </div>
+      <svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;color:var(--sunset-gold);"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+    </a>
   </div>
 </div>
 
-<!-- Direct URL Input Bar -->
+<!-- Top Navigation Bar -->
+<div class="top-header">
+  <button class="icon-btn" onclick="toggleDrawer()" title="Menu">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+  </button>
+  <div class="live-badge">
+    <span class="live-dot"></span>
+    <span id="activePlaylistBadge">All Tracks</span>
+  </div>
+  <button class="icon-btn" onclick="document.getElementById('directUrlInput').focus()" title="Add Song">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+  </button>
+</div>
+
+<!-- Add Song / Playlist Link Card -->
 <div class="url-card">
-  <input type="text" id="directUrlInput" class="url-input" placeholder="Paste YouTube Video / Playlist Link...">
-  <button class="url-submit-btn" onclick="submitDirectURL()">+ Add Link</button>
+  <div class="url-input-row">
+    <input type="text" id="directUrlInput" class="url-input" placeholder="Paste YouTube Video or Playlist Link...">
+    <button class="url-submit-btn" onclick="submitDirectURL()">+ Add</button>
+  </div>
+  <div class="url-options-row">
+    <div class="privacy-toggle">
+      <span class="privacy-opt active" id="optPublic" onclick="setAddPrivacy(false)">🌐 Public</span>
+      <span class="privacy-opt" id="optPrivate" onclick="setAddPrivacy(true)">🔒 Private</span>
+    </div>
+    <span style="font-size:10px; color:rgba(255,255,255,0.45);" id="privacyDesc">Shared with everyone</span>
+  </div>
 </div>
 
 <div id="uploadStatus">Processing...</div>
 
-<!-- Music Player -->
+<!-- Music Player Card -->
 <div class="player">
   <div class="player-top">
-    <div class="art" id="artIcon"></div>
+    <div class="art-wrapper">
+      <div class="art-aura" id="artAura"></div>
+      <div class="art" id="artIcon"></div>
+    </div>
     <div class="meta">
       <div class="title" id="trackTitle">No Song Selected</div>
-      <div class="artist" id="trackArtist">Paste link or add file</div>
+      <div class="artist" id="trackArtist">
+        <span id="artistName">Select a track</span>
+        <span class="tag-badge public" id="trackPrivacyTag">PUBLIC</span>
+      </div>
     </div>
+    <button class="like-btn" id="likeBtn" onclick="toggleLikeCurrentSong()" title="Like Track">
+      <svg id="likeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    </button>
   </div>
 
   <div class="prog-row">
@@ -422,7 +689,11 @@
     <span class="t end" id="durTime">0:00</span>
   </div>
 
+  <!-- Player Controls (Spotify Style) -->
   <div class="controls-row">
+    <button class="ctrl-mini" id="shuffleBtn" onclick="toggleShuffle()" title="Shuffle">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
+    </button>
     <button class="track-btn" onclick="prevSong()" title="Previous Song">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
     </button>
@@ -432,17 +703,24 @@
     <button class="track-btn" onclick="nextSong()" title="Next Song">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm9-12v12h2V6h-2z"/></svg>
     </button>
+    <button class="ctrl-mini" id="repeatBtn" onclick="toggleRepeat()" title="Repeat">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+    </button>
   </div>
 </div>
 
-<!-- Playlist Card -->
+<!-- Playlist Card with Search -->
 <div class="playlist-card">
   <div class="playlist-header">
-    <span>SHARED CLOUD PLAYLIST</span>
+    <span id="currentPlaylistTitle">ALL PLAYLIST TRACKS</span>
     <span id="playlistCount">0 Tracks</span>
   </div>
+  <div class="search-filter-box">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+    <input type="text" id="playlistSearch" class="search-input" placeholder="Search track in this playlist..." oninput="filterSongs()">
+  </div>
   <ul class="song-list" id="songList">
-    <li class="empty-msg">Loading Songs...</li>
+    <li class="empty-msg">Loading songs...</li>
   </ul>
 </div>
 
@@ -458,6 +736,7 @@
     if (btn) btn.style.display = 'none';
   }
 
+  // Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyAOGQHVfSFDImcjLUO8o_ntnSg3HCoZWXc",
     authDomain: "songabuzar.firebaseapp.com",
@@ -472,14 +751,26 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
-  let songsList = [];
+  // State
+  let publicSongs = [];
+  let privateSongs = JSON.parse(localStorage.getItem('abuzar_private_songs') || '[]');
+  let likedSongIds = JSON.parse(localStorage.getItem('abuzar_liked_ids') || '[]');
+  
+  let currentFilter = 'all'; // 'all', 'public', 'private', 'liked'
+  let displayedSongs = [];
   let currentIndex = 0;
-  let currentMode = 'audio';
+  let currentMode = 'audio'; // 'audio' or 'youtube'
+  
+  let isAddPrivate = false;
+  let isShuffle = false;
+  let isRepeat = false; // false (off) or true (repeat current track)
+
   let ytPlayer = null;
   let ytProgressTimer = null;
   let isYtReady = false;
   let pendingVideoId = null;
 
+  // DOM Elements
   const audio = document.getElementById('mainAudio');
   const playBtn = document.getElementById('playBtn');
   const playIcon = document.getElementById('playIcon');
@@ -488,13 +779,104 @@
   const curTimeEl = document.getElementById('curTime');
   const durTimeEl = document.getElementById('durTime');
   const trackTitle = document.getElementById('trackTitle');
-  const trackArtist = document.getElementById('trackArtist');
-  const trackBadge = document.getElementById('trackBadge');
+  const artistName = document.getElementById('artistName');
+  const trackPrivacyTag = document.getElementById('trackPrivacyTag');
+  const activePlaylistBadge = document.getElementById('activePlaylistBadge');
   const artIcon = document.getElementById('artIcon');
+  const artAura = document.getElementById('artAura');
   const songListEl = document.getElementById('songList');
   const playlistCountEl = document.getElementById('playlistCount');
+  const currentPlaylistTitle = document.getElementById('currentPlaylistTitle');
   const uploadStatus = document.getElementById('uploadStatus');
+  const likeBtn = document.getElementById('likeBtn');
+  const likeIcon = document.getElementById('likeIcon');
+  const shuffleBtn = document.getElementById('shuffleBtn');
+  const repeatBtn = document.getElementById('repeatBtn');
 
+  // Drawer Control
+  function toggleDrawer(){
+    document.getElementById('sideDrawer').classList.toggle('open');
+    document.getElementById('drawerOverlay').classList.toggle('open');
+  }
+
+  function setAddPrivacy(isPrivate){
+    isAddPrivate = isPrivate;
+    document.getElementById('optPublic').classList.toggle('active', !isPrivate);
+    document.getElementById('optPrivate').classList.toggle('active', isPrivate);
+    document.getElementById('privacyDesc').textContent = isPrivate ? 'Saved only on this device' : 'Shared with everyone';
+  }
+
+  // Switch between All / Public / Private / Liked
+  function switchPlaylistFilter(filter){
+    currentFilter = filter;
+    document.querySelectorAll('.drawer-item').forEach(el => el.classList.remove('active'));
+    const tabEl = document.getElementById(`tab-${filter}`);
+    if(tabEl) tabEl.classList.add('active');
+
+    const titles = {
+      'all': 'ALL PLAYLIST TRACKS',
+      'public': 'PUBLIC CLOUD TRACKS',
+      'private': 'PRIVATE LOCAL TRACKS',
+      'liked': 'LIKED / FAVORITE SONGS'
+    };
+    currentPlaylistTitle.textContent = titles[filter];
+    activePlaylistBadge.textContent = filter.toUpperCase();
+    document.getElementById('playlistSearch').value = '';
+
+    toggleDrawer();
+    buildDisplayedList();
+    renderPlaylistUI();
+  }
+
+  function buildDisplayedList(){
+    let all = [
+      ...publicSongs.map(s => ({ ...s, isPrivate: false })),
+      ...privateSongs.map(s => ({ ...s, isPrivate: true }))
+    ];
+
+    if(currentFilter === 'public'){
+      displayedSongs = all.filter(s => !s.isPrivate);
+    } else if(currentFilter === 'private'){
+      displayedSongs = all.filter(s => s.isPrivate);
+    } else if(currentFilter === 'liked'){
+      displayedSongs = all.filter(s => likedSongIds.includes(s.id));
+    } else {
+      displayedSongs = all;
+    }
+
+    // Update Drawer Badges
+    document.getElementById('badge-all').textContent = all.length;
+    document.getElementById('badge-public').textContent = publicSongs.length;
+    document.getElementById('badge-private').textContent = privateSongs.length;
+    document.getElementById('badge-liked').textContent = all.filter(s => likedSongIds.includes(s.id)).length;
+  }
+
+  function filterSongs(){
+    const query = document.getElementById('playlistSearch').value.toLowerCase().trim();
+    buildDisplayedList();
+    if(query){
+      displayedSongs = displayedSongs.filter(s => s.name.toLowerCase().includes(query));
+    }
+    renderPlaylistUI();
+  }
+
+  // Firebase Realtime Listener for Public Songs
+  db.ref("shared_songs").on("value", (snapshot) => {
+    const data = snapshot.val();
+    publicSongs = [];
+    if(data){
+      Object.keys(data).forEach(key => {
+        publicSongs.push({ id: key, ...data[key] });
+      });
+    }
+    buildDisplayedList();
+    renderPlaylistUI();
+    if(displayedSongs.length > 0 && !audio.src && (!ytPlayer || currentMode !== 'youtube')){
+      loadSongByIndex(0, false);
+    }
+  });
+
+  // Extractors
   function extractYouTubeID(url) {
     if (!url) return null;
     const cleanUrl = url.trim();
@@ -511,18 +893,12 @@
     return match ? match[1] : null;
   }
 
-  // YouTube API Iframe Initialization
+  // YouTube API
   function onYouTubeIframeAPIReady() {
     ytPlayer = new YT.Player('ytPlayer', {
       height: '100%',
       width: '100%',
-      playerVars: { 
-        'autoplay': 1, 
-        'controls': 0, 
-        'playsinline': 1,
-        'rel': 0,
-        'enablejsapi': 1
-      },
+      playerVars: { 'autoplay': 1, 'controls': 0, 'playsinline': 1, 'rel': 0, 'enablejsapi': 1 },
       events: {
         'onReady': () => { 
           isYtReady = true; 
@@ -533,29 +909,32 @@
           }
         },
         'onStateChange': onPlayerStateChange,
-        'onError': (e) => {
-          console.warn("YouTube Player Error Code: ", e.data);
-          nextSong();
-        }
+        'onError': () => nextSong()
       }
     });
   }
 
   function onPlayerStateChange(event) {
     if (currentMode !== 'youtube') return;
-
     if (event.data === YT.PlayerState.PLAYING) {
       playIcon.innerHTML = '<rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect>';
       artIcon.classList.add('playing');
+      artAura.classList.add('active');
       startYouTubeTracker();
     } else if (event.data === YT.PlayerState.PAUSED) {
       playIcon.innerHTML = '<path d="M8 5v14l11-7z"></path>';
       artIcon.classList.remove('playing');
+      artAura.classList.remove('active');
       stopYouTubeTracker();
     } else if (event.data === YT.PlayerState.ENDED) {
       artIcon.classList.remove('playing');
+      artAura.classList.remove('active');
       stopYouTubeTracker();
-      nextSong();
+      if(isRepeat){
+        loadSongByIndex(currentIndex, true);
+      } else {
+        nextSong();
+      }
     }
   }
 
@@ -566,8 +945,7 @@
         const cur = ytPlayer.getCurrentTime();
         const dur = ytPlayer.getDuration();
         if (dur > 0) {
-          const percent = (cur / dur) * 100;
-          progFill.style.width = percent + '%';
+          progFill.style.width = ((cur / dur) * 100) + '%';
           curTimeEl.textContent = fmt(cur);
           durTimeEl.textContent = fmt(dur);
         }
@@ -579,27 +957,13 @@
     if (ytProgressTimer) clearInterval(ytProgressTimer);
   }
 
-  // Firebase Realtime Listener
-  db.ref("shared_songs").on("value", (snapshot) => {
-    const data = snapshot.val();
-    songsList = [];
-    if(data){
-      Object.keys(data).forEach(key => {
-        songsList.push({ id: key, ...data[key] });
-      });
-    }
-    renderPlaylistUI();
-    if(songsList.length > 0 && !audio.src && (!ytPlayer || currentMode !== 'youtube')){
-      loadSongByIndex(0, false);
-    }
-  });
-
+  // Add Songs (Public or Private)
   async function submitDirectURL(){
     const input = document.getElementById('directUrlInput');
     const url = input.value.trim();
 
     if(!url){
-      alert("Kripya YouTube Video ya Playlist link dalein!");
+      alert("YouTube Video ya Playlist URL paste karein!");
       return;
     }
 
@@ -608,7 +972,7 @@
 
     if (playlistId) {
       uploadStatus.style.display = 'block';
-      uploadStatus.textContent = 'Playlist songs add ho rahe hain...';
+      uploadStatus.textContent = 'Playlist songs fetch ho rahe hain...';
 
       try {
         const apiUrl = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlistId}&key=${YOUTUBE_API_KEY}`;
@@ -627,12 +991,12 @@
           const sVideoId = item.snippet.resourceId.videoId;
           if (sTitle === "Private video" || sTitle === "Deleted video") continue;
 
-          await db.ref("shared_songs").push({
+          await saveSongRecord({
             name: sTitle,
             type: "youtube",
             videoId: sVideoId,
             addedAt: Date.now()
-          });
+          }, isAddPrivate);
         }
         input.value = '';
       } catch (err) {
@@ -642,30 +1006,37 @@
       }
     } else if (videoId) {
       uploadStatus.style.display = 'block';
-      uploadStatus.textContent = 'YouTube Gana save ho raha hai...';
+      uploadStatus.textContent = 'Song save ho raha hai...';
 
       let title = "YouTube Song (" + videoId + ")";
       try {
-        const oembedUrl = `https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`;
-        const res = await fetch(oembedUrl);
-        const oembed = await res.json();
+        const oembed = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`).then(r=>r.json());
         if (oembed && oembed.title) title = oembed.title;
       } catch(e) {}
 
-      db.ref("shared_songs").push({
+      await saveSongRecord({
         name: title,
         type: "youtube",
         videoId: videoId,
         addedAt: Date.now()
-      }).then(() => {
-        uploadStatus.style.display = 'none';
-        input.value = '';
-      }).catch((err) => {
-        alert("Save Error: " + err.message);
-        uploadStatus.style.display = 'none';
-      });
+      }, isAddPrivate);
+
+      uploadStatus.style.display = 'none';
+      input.value = '';
     } else {
       alert("Invalid YouTube Link!");
+    }
+  }
+
+  async function saveSongRecord(songObj, isPrivate){
+    if(isPrivate){
+      songObj.id = 'priv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+      privateSongs.push(songObj);
+      localStorage.setItem('abuzar_private_songs', JSON.stringify(privateSongs));
+      buildDisplayedList();
+      renderPlaylistUI();
+    } else {
+      await db.ref("shared_songs").push(songObj);
     }
   }
 
@@ -680,58 +1051,139 @@
     }
 
     uploadStatus.style.display = 'block';
-    uploadStatus.textContent = 'Uploading File to Cloud...';
+    uploadStatus.textContent = 'Uploading Audio...';
 
     const reader = new FileReader();
-    reader.onload = function(evt){
+    reader.onload = async function(evt){
       const base64Audio = evt.target.result;
       const songName = file.name.replace(/\.[^/.]+$/, "");
 
-      db.ref("shared_songs").push({
+      await saveSongRecord({
         name: songName,
         type: "audio",
         audioData: base64Audio,
         addedAt: Date.now()
-      }).then(()=>{
-        uploadStatus.style.display = 'none';
-        e.target.value = "";
-      }).catch((err)=>{
-        alert("Upload error: " + err.message);
-        uploadStatus.style.display = 'none';
-        e.target.value = "";
-      });
+      }, isAddPrivate);
+
+      uploadStatus.style.display = 'none';
+      e.target.value = "";
     };
     reader.readAsDataURL(file);
   }
 
+  // Toggle Song Privacy (Public <-> Private)
+  function toggleSongPrivacy(id, currentPrivacy){
+    if(currentPrivacy){
+      // Convert Private to Public
+      const song = privateSongs.find(s => s.id === id);
+      if(song && confirm("Is private song ko Public (Shared Cloud) banana chahte hain?")){
+        const newObj = { ...song };
+        delete newObj.id;
+        delete newObj.isPrivate;
+        db.ref("shared_songs").push(newObj).then(()=>{
+          privateSongs = privateSongs.filter(s => s.id !== id);
+          localStorage.setItem('abuzar_private_songs', JSON.stringify(privateSongs));
+          buildDisplayedList();
+          renderPlaylistUI();
+        });
+      }
+    } else {
+      // Convert Public to Private
+      const song = publicSongs.find(s => s.id === id);
+      if(song && confirm("Is song ko Public se hata kar apna Private banana chahte hain?")){
+        const privObj = { ...song, isPrivate: true };
+        privateSongs.push(privObj);
+        localStorage.setItem('abuzar_private_songs', JSON.stringify(privateSongs));
+        db.ref("shared_songs/" + id).remove().then(()=>{
+          buildDisplayedList();
+          renderPlaylistUI();
+        });
+      }
+    }
+  }
+
+  // Delete Song
+  function deleteSong(id, isPrivate){
+    if(confirm("Kya aap is song ko permanently delete karna chahte hain?")){
+      if(isPrivate){
+        privateSongs = privateSongs.filter(s => s.id !== id);
+        localStorage.setItem('abuzar_private_songs', JSON.stringify(privateSongs));
+        buildDisplayedList();
+        renderPlaylistUI();
+      } else {
+        db.ref("shared_songs/" + id).remove();
+      }
+    }
+  }
+
+  // Like / Favorite Control
+  function toggleLikeCurrentSong(){
+    if(displayedSongs.length === 0) return;
+    const song = displayedSongs[currentIndex];
+    const idx = likedSongIds.indexOf(song.id);
+    if(idx > -1){
+      likedSongIds.splice(idx, 1);
+    } else {
+      likedSongIds.push(song.id);
+    }
+    localStorage.setItem('abuzar_liked_ids', JSON.stringify(likedSongIds));
+    updateLikeUI();
+    buildDisplayedList();
+  }
+
+  function updateLikeUI(){
+    if(displayedSongs.length === 0) return;
+    const song = displayedSongs[currentIndex];
+    const isLiked = likedSongIds.includes(song.id);
+    likeBtn.classList.toggle('liked', isLiked);
+    likeIcon.setAttribute('fill', isLiked ? '#ff4757' : 'none');
+    likeIcon.setAttribute('stroke', isLiked ? '#ff4757' : 'currentColor');
+  }
+
+  function toggleShuffle(){
+    isShuffle = !isShuffle;
+    shuffleBtn.classList.toggle('active', isShuffle);
+  }
+
+  function toggleRepeat(){
+    isRepeat = !isRepeat;
+    repeatBtn.classList.toggle('active', isRepeat);
+  }
+
+  // Render Playlist UI
   function renderPlaylistUI(){
     songListEl.innerHTML = "";
-    trackBadge.textContent = `${songsList.length} Songs`;
-    playlistCountEl.textContent = `${songsList.length} Tracks`;
+    playlistCountEl.textContent = `${displayedSongs.length} Tracks`;
 
-    if(songsList.length === 0){
-      songListEl.innerHTML = '<li class="empty-msg">No songs in playlist! Paste a YouTube URL above.</li>';
-      trackTitle.textContent = "No Song Selected";
-      trackArtist.textContent = "Paste YouTube link or add file";
-      audio.src = "";
-      if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
+    if(displayedSongs.length === 0){
+      songListEl.innerHTML = '<li class="empty-msg">No songs in this view. Paste a link or upload a file!</li>';
       return;
     }
 
-    songsList.forEach((song, idx) => {
+    displayedSongs.forEach((song, idx) => {
       const li = document.createElement('li');
       li.className = `song-item ${idx === currentIndex ? 'active' : ''}`;
       li.onclick = () => loadSongByIndex(idx, true);
 
       const icon = song.type === 'youtube' ? '🎬' : '🎵';
+      const privacyLabel = song.isPrivate ? '🔒 Private' : '🌐 Public';
 
       li.innerHTML = `
-        <span class="song-name">${idx + 1}. ${icon} ${song.name}</span>
-        <button class="menu-btn" onclick="event.stopPropagation(); toggleMenu('${song.id}')" title="Options">
-          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
-        </button>
+        <div class="song-info">
+          <span class="song-name">${idx + 1}. ${icon} ${song.name}</span>
+          <span class="song-subtag">${privacyLabel}</span>
+        </div>
+        <div class="song-actions">
+          <button class="menu-btn" onclick="event.stopPropagation(); toggleMenu('${song.id}')" title="Options">
+            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+          </button>
+        </div>
         <div class="dropdown-menu" id="menu-${song.id}">
-          <button class="dropdown-item" onclick="event.stopPropagation(); deleteCloudSong('${song.id}')">
+          <button class="dropdown-item" onclick="event.stopPropagation(); toggleSongPrivacy('${song.id}', ${song.isPrivate})">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+            ${song.isPrivate ? 'Make Public' : 'Make Private'}
+          </button>
+          <button class="dropdown-item delete" onclick="event.stopPropagation(); deleteSong('${song.id}', ${song.isPrivate})">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
             Delete Song
           </button>
@@ -749,30 +1201,29 @@
     if(targetMenu) targetMenu.classList.toggle('show');
   }
 
-  document.addEventListener('click', ()=>{
+  document.addEventListener('click', () => {
     document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
   });
 
-  function deleteCloudSong(id){
-    if(confirm("Kya aap sach mein ye gana permanently delete karna chahte hain?")){
-      db.ref("shared_songs/" + id).remove();
-    }
-  }
-
+  // Load and Play Track
   function loadSongByIndex(idx, autoPlay = true){
-    if(songsList.length === 0) return;
-    if(idx >= songsList.length) idx = 0;
-    if(idx < 0) idx = songsList.length - 1;
+    if(displayedSongs.length === 0) return;
+    if(idx >= displayedSongs.length) idx = 0;
+    if(idx < 0) idx = displayedSongs.length - 1;
 
     currentIndex = idx;
-    const song = songsList[currentIndex];
+    const song = displayedSongs[currentIndex];
 
     trackTitle.textContent = song.name;
-    trackArtist.textContent = `Song ${currentIndex + 1} of ${songsList.length}`;
+    artistName.textContent = `Song ${currentIndex + 1} of ${displayedSongs.length}`;
+    trackPrivacyTag.textContent = song.isPrivate ? 'PRIVATE' : 'PUBLIC';
+    trackPrivacyTag.className = `tag-badge ${song.isPrivate ? 'private' : 'public'}`;
+
     progFill.style.width = '0%';
     curTimeEl.textContent = '0:00';
     durTimeEl.textContent = '0:00';
 
+    updateLikeUI();
     renderPlaylistUI();
 
     if(song.type === 'youtube'){
@@ -803,17 +1254,22 @@
   }
 
   function nextSong(){
-    if(songsList.length === 0) return;
-    loadSongByIndex(currentIndex + 1, true);
+    if(displayedSongs.length === 0) return;
+    if(isShuffle){
+      let randomIdx = Math.floor(Math.random() * displayedSongs.length);
+      loadSongByIndex(randomIdx, true);
+    } else {
+      loadSongByIndex(currentIndex + 1, true);
+    }
   }
 
   function prevSong(){
-    if(songsList.length === 0) return;
+    if(displayedSongs.length === 0) return;
     loadSongByIndex(currentIndex - 1, true);
   }
 
   function togglePlay(){
-    if(songsList.length === 0) return;
+    if(displayedSongs.length === 0) return;
 
     if(currentMode === 'youtube'){
       if(isYtReady && ytPlayer && ytPlayer.getPlayerState){
@@ -827,7 +1283,7 @@
         loadSongByIndex(currentIndex, true);
       }
     } else {
-      if(!audio.src && songsList.length > 0){
+      if(!audio.src && displayedSongs.length > 0){
         loadSongByIndex(0, true);
         return;
       }
@@ -852,6 +1308,7 @@
     if(currentMode === 'audio'){
       playIcon.innerHTML = '<rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect>';
       artIcon.classList.add('playing');
+      artAura.classList.add('active');
     }
   });
 
@@ -859,27 +1316,31 @@
     if(currentMode === 'audio'){
       playIcon.innerHTML = '<path d="M8 5v14l11-7z"></path>';
       artIcon.classList.remove('playing');
+      artAura.classList.remove('active');
     }
   });
 
   audio.addEventListener('timeupdate', ()=>{
     if(currentMode === 'audio' && audio.duration){
-      const percent = (audio.currentTime / audio.duration) * 100;
-      progFill.style.width = percent + '%';
+      progFill.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
       curTimeEl.textContent = fmt(audio.currentTime);
       durTimeEl.textContent = fmt(audio.duration);
     }
   });
 
-  audio.addEventListener('ended', nextSong);
+  audio.addEventListener('ended', ()=>{
+    if(isRepeat){
+      loadSongByIndex(currentIndex, true);
+    } else {
+      nextSong();
+    }
+  });
 
   progBar.addEventListener('click', (e)=>{
     const rect = progBar.getBoundingClientRect();
     const ratio = (e.clientX - rect.left) / rect.width;
-    
     if(currentMode === 'youtube' && ytPlayer && ytPlayer.getDuration){
-      const targetTime = ratio * ytPlayer.getDuration();
-      ytPlayer.seekTo(targetTime, true);
+      ytPlayer.seekTo(ratio * ytPlayer.getDuration(), true);
     } else if(currentMode === 'audio' && audio.duration){
       audio.currentTime = ratio * audio.duration;
     }
