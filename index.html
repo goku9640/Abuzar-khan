@@ -32,15 +32,27 @@
     display:flex;
     flex-direction:column;
     align-items:center;
-    justify-content:flex-end;
-    padding:65px 0 36px;
+    justify-content:flex-start;
+    padding:70px 0 36px;
     position:relative;
     overflow-y:auto;
     background: linear-gradient(180deg, rgba(10,5,15,0.25) 0%, rgba(10,5,15,0.8) 75%, rgba(10,5,15,0.96) 100%),
                 url('https://i.postimg.cc/L4G45cGW/file-0000000058ec8211a0f84031c053e7b6.png') center top / cover no-repeat fixed;
   }
 
-  /* iPhone Dynamic Island Style Top Bar */
+  /* YouTube IFrame hidden safely behind background */
+  #ytPlayerContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    z-index: -999;
+    opacity: 0.001;
+    pointer-events: none;
+  }
+
+  /* Top Bar */
   .top-header{
     position: absolute;
     top: 16px;
@@ -58,13 +70,13 @@
     gap:8px;
   }
 
-  .top-add-btn{
+  .top-btn{
     background: var(--ios-glass-btn);
     border: 1px solid var(--ios-glass-border);
     backdrop-filter: blur(28px) saturate(190%);
     -webkit-backdrop-filter: blur(28px) saturate(190%);
     color: var(--cream);
-    padding: 8px 14px;
+    padding: 7px 14px;
     border-radius: 999px;
     font-size: 11px;
     font-weight: 500;
@@ -75,8 +87,8 @@
     box-shadow: 0 4px 20px rgba(0,0,0,0.25), inset 0 1px 1px var(--ios-highlight);
     transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
-  .top-add-btn:active{ transform: scale(0.94); background: rgba(255,255,255,0.2); }
-  .top-add-btn svg{ width:14px; height:14px; }
+  .top-btn:active{ transform: scale(0.94); background: rgba(255,255,255,0.2); }
+  .top-btn svg{ width:13px; height:13px; }
 
   .download-apk-btn{
     background: linear-gradient(135deg, rgba(244,184,96,0.85), rgba(255,138,76,0.85));
@@ -85,7 +97,7 @@
     -webkit-backdrop-filter: blur(28px);
     color: #111;
     font-weight: 600;
-    padding: 8px 14px;
+    padding: 7px 14px;
     border-radius: 999px;
     font-size: 11px;
     text-decoration: none;
@@ -96,7 +108,7 @@
     transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
   .download-apk-btn:active{ transform: scale(0.94); }
-  .download-apk-btn svg{ width:14px; height:14px; }
+  .download-apk-btn svg{ width:13px; height:13px; }
 
   .live-badge{
     display:flex; align-items:center; gap:6px;
@@ -104,7 +116,7 @@
     border: 1px solid var(--ios-glass-border);
     backdrop-filter: blur(28px) saturate(190%);
     -webkit-backdrop-filter: blur(28px) saturate(190%);
-    padding: 7px 13px;
+    padding: 7px 12px;
     border-radius: 999px;
     font-size: 11px;
     color: var(--cream);
@@ -116,6 +128,48 @@
     background:#22c55e;
     box-shadow:0 0 10px #22c55e;
   }
+
+  /* Direct URL Input Bar Card */
+  .url-card{
+    width: var(--safe-w);
+    background: var(--ios-glass);
+    border: 1px solid var(--ios-glass-border);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    border-radius: 18px;
+    padding: 10px;
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 1px 1px var(--ios-highlight);
+  }
+  .url-input{
+    flex: 1;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 8px 12px;
+    color: #fff;
+    font-size: 12px;
+    font-family: inherit;
+    outline: none;
+  }
+  .url-input::placeholder{ color: rgba(255,255,255,0.5); }
+  .url-input:focus{ border-color: var(--sunset-gold); }
+
+  .url-submit-btn{
+    background: linear-gradient(135deg, var(--sunset-gold), var(--sunset-orange));
+    border: none;
+    color: #111;
+    font-weight: 600;
+    font-size: 11px;
+    padding: 0 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255,138,76,0.3);
+    transition: transform 0.15s ease;
+  }
+  .url-submit-btn:active{ transform: scale(0.94); }
 
   /* iOS Frosted Glass Music Card */
   .player{
@@ -131,7 +185,6 @@
   }
   .player-top{ display:flex; align-items:center; gap:14px; }
 
-  /* iPhone Circular Avatar */
   .art{
     width:56px; height:56px; border-radius:50%;
     background:url('https://i.postimg.cc/L4G45cGW/file-0000000058ec8211a0f84031c053e7b6.png') center top / cover no-repeat;
@@ -276,7 +329,7 @@
     position:absolute;
     right:10px;
     top:36px;
-    background: rgba(20, 12, 26, 0.9);
+    background: rgba(20, 12, 26, 0.95);
     border: 1px solid var(--ios-glass-border);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
@@ -324,13 +377,15 @@
 <body>
 
 <audio id="mainAudio" preload="metadata"></audio>
+<div id="ytPlayerContainer"><div id="ytPlayer"></div></div>
 <input type="file" id="audioFile" accept="audio/*" style="display:none;" onchange="uploadAudioCloud(event)">
 
+<!-- Top Navigation Bar -->
 <div class="top-header">
   <div class="top-actions">
-    <button class="top-add-btn" onclick="document.getElementById('audioFile').click()">
+    <button class="top-btn" onclick="document.getElementById('audioFile').click()" title="Upload File">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-      <span>+ Add</span>
+      <span>File</span>
     </button>
     <a href="app.apk" download id="downloadAppBtn" class="download-apk-btn">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
@@ -343,15 +398,21 @@
   </div>
 </div>
 
-<div id="uploadStatus">Syncing Song to Cloud... Please wait</div>
+<!-- Direct URL Input Bar -->
+<div class="url-card">
+  <input type="text" id="directUrlInput" class="url-input" placeholder="Paste YouTube Video / Playlist Link...">
+  <button class="url-submit-btn" onclick="submitDirectURL()">+ Add Link</button>
+</div>
 
+<div id="uploadStatus">Processing...</div>
+
+<!-- Music Player -->
 <div class="player">
   <div class="player-top">
-    <!-- iPhone Glass Photo Disc -->
     <div class="art" id="artIcon"></div>
     <div class="meta">
       <div class="title" id="trackTitle">No Song Selected</div>
-      <div class="artist" id="trackArtist">Tap '+ Add' to begin</div>
+      <div class="artist" id="trackArtist">Paste link or add file</div>
     </div>
   </div>
 
@@ -374,6 +435,7 @@
   </div>
 </div>
 
+<!-- Playlist Card -->
 <div class="playlist-card">
   <div class="playlist-header">
     <span>SHARED CLOUD PLAYLIST</span>
@@ -384,8 +446,11 @@
   </ul>
 </div>
 
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <script>
-  // Hide "Get App" if running inside the Android APK / Webview
+  const YOUTUBE_API_KEY = "AIzaSyDem5JCyVSs4fI2d3HTkrh5sauOxCvFCMw";
+
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
   const isWebview = /(wv|WebIntoApp)/i.test(navigator.userAgent) || (!window.chrome && Boolean(window.navigator.userAgent.match(/Version\/[\d.]+/)));
   if (isStandalone || isWebview) {
@@ -409,6 +474,11 @@
 
   let songsList = [];
   let currentIndex = 0;
+  let currentMode = 'audio';
+  let ytPlayer = null;
+  let ytProgressTimer = null;
+  let isYtReady = false;
+  let pendingVideoId = null;
 
   const audio = document.getElementById('mainAudio');
   const playBtn = document.getElementById('playBtn');
@@ -425,6 +495,91 @@
   const playlistCountEl = document.getElementById('playlistCount');
   const uploadStatus = document.getElementById('uploadStatus');
 
+  function extractYouTubeID(url) {
+    if (!url) return null;
+    const cleanUrl = url.trim();
+    const regExp = /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/|live\/|watch\?.+&v=))([\w-]{11})/;
+    const match = cleanUrl.match(regExp);
+    if (match && match[1]) return match[1];
+    if (cleanUrl.length === 11 && !cleanUrl.includes("/")) return cleanUrl;
+    return null;
+  }
+
+  function extractPlaylistID(url) {
+    if (!url) return null;
+    const match = url.match(/[?&]list=([^#\&\?]+)/);
+    return match ? match[1] : null;
+  }
+
+  // YouTube API Iframe Initialization
+  function onYouTubeIframeAPIReady() {
+    ytPlayer = new YT.Player('ytPlayer', {
+      height: '100%',
+      width: '100%',
+      playerVars: { 
+        'autoplay': 1, 
+        'controls': 0, 
+        'playsinline': 1,
+        'rel': 0,
+        'enablejsapi': 1
+      },
+      events: {
+        'onReady': () => { 
+          isYtReady = true; 
+          if (pendingVideoId) {
+            ytPlayer.loadVideoById(pendingVideoId);
+            ytPlayer.playVideo();
+            pendingVideoId = null;
+          }
+        },
+        'onStateChange': onPlayerStateChange,
+        'onError': (e) => {
+          console.warn("YouTube Player Error Code: ", e.data);
+          nextSong();
+        }
+      }
+    });
+  }
+
+  function onPlayerStateChange(event) {
+    if (currentMode !== 'youtube') return;
+
+    if (event.data === YT.PlayerState.PLAYING) {
+      playIcon.innerHTML = '<rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect>';
+      artIcon.classList.add('playing');
+      startYouTubeTracker();
+    } else if (event.data === YT.PlayerState.PAUSED) {
+      playIcon.innerHTML = '<path d="M8 5v14l11-7z"></path>';
+      artIcon.classList.remove('playing');
+      stopYouTubeTracker();
+    } else if (event.data === YT.PlayerState.ENDED) {
+      artIcon.classList.remove('playing');
+      stopYouTubeTracker();
+      nextSong();
+    }
+  }
+
+  function startYouTubeTracker() {
+    stopYouTubeTracker();
+    ytProgressTimer = setInterval(() => {
+      if (ytPlayer && ytPlayer.getCurrentTime && ytPlayer.getDuration) {
+        const cur = ytPlayer.getCurrentTime();
+        const dur = ytPlayer.getDuration();
+        if (dur > 0) {
+          const percent = (cur / dur) * 100;
+          progFill.style.width = percent + '%';
+          curTimeEl.textContent = fmt(cur);
+          durTimeEl.textContent = fmt(dur);
+        }
+      }
+    }, 500);
+  }
+
+  function stopYouTubeTracker() {
+    if (ytProgressTimer) clearInterval(ytProgressTimer);
+  }
+
+  // Firebase Realtime Listener
   db.ref("shared_songs").on("value", (snapshot) => {
     const data = snapshot.val();
     songsList = [];
@@ -434,22 +589,98 @@
       });
     }
     renderPlaylistUI();
-    if(songsList.length > 0 && !audio.src){
+    if(songsList.length > 0 && !audio.src && (!ytPlayer || currentMode !== 'youtube')){
       loadSongByIndex(0, false);
     }
   });
+
+  async function submitDirectURL(){
+    const input = document.getElementById('directUrlInput');
+    const url = input.value.trim();
+
+    if(!url){
+      alert("Kripya YouTube Video ya Playlist link dalein!");
+      return;
+    }
+
+    const playlistId = extractPlaylistID(url);
+    const videoId = extractYouTubeID(url);
+
+    if (playlistId) {
+      uploadStatus.style.display = 'block';
+      uploadStatus.textContent = 'Playlist songs add ho rahe hain...';
+
+      try {
+        const apiUrl = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlistId}&key=${YOUTUBE_API_KEY}`;
+        const response = await fetch(apiUrl);
+        const resData = await response.json();
+
+        if (resData.error) {
+          alert("API Error: " + resData.error.message);
+          uploadStatus.style.display = 'none';
+          return;
+        }
+
+        const items = resData.items || [];
+        for (const item of items) {
+          const sTitle = item.snippet.title;
+          const sVideoId = item.snippet.resourceId.videoId;
+          if (sTitle === "Private video" || sTitle === "Deleted video") continue;
+
+          await db.ref("shared_songs").push({
+            name: sTitle,
+            type: "youtube",
+            videoId: sVideoId,
+            addedAt: Date.now()
+          });
+        }
+        input.value = '';
+      } catch (err) {
+        alert("Playlist Error: " + err.message);
+      } finally {
+        uploadStatus.style.display = 'none';
+      }
+    } else if (videoId) {
+      uploadStatus.style.display = 'block';
+      uploadStatus.textContent = 'YouTube Gana save ho raha hai...';
+
+      let title = "YouTube Song (" + videoId + ")";
+      try {
+        const oembedUrl = `https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`;
+        const res = await fetch(oembedUrl);
+        const oembed = await res.json();
+        if (oembed && oembed.title) title = oembed.title;
+      } catch(e) {}
+
+      db.ref("shared_songs").push({
+        name: title,
+        type: "youtube",
+        videoId: videoId,
+        addedAt: Date.now()
+      }).then(() => {
+        uploadStatus.style.display = 'none';
+        input.value = '';
+      }).catch((err) => {
+        alert("Save Error: " + err.message);
+        uploadStatus.style.display = 'none';
+      });
+    } else {
+      alert("Invalid YouTube Link!");
+    }
+  }
 
   function uploadAudioCloud(e){
     const file = e.target.files[0];
     if(!file) return;
 
     if(file.size > 10 * 1024 * 1024){
-      alert("File size 10MB se choti honi chahiye!");
+      alert("File size 10MB se kam hona chahiye!");
       e.target.value = "";
       return;
     }
 
     uploadStatus.style.display = 'block';
+    uploadStatus.textContent = 'Uploading File to Cloud...';
 
     const reader = new FileReader();
     reader.onload = function(evt){
@@ -458,6 +689,7 @@
 
       db.ref("shared_songs").push({
         name: songName,
+        type: "audio",
         audioData: base64Audio,
         addedAt: Date.now()
       }).then(()=>{
@@ -478,10 +710,11 @@
     playlistCountEl.textContent = `${songsList.length} Tracks`;
 
     if(songsList.length === 0){
-      songListEl.innerHTML = '<li class="empty-msg">No songs uploaded yet! Tap "+ Add".</li>';
+      songListEl.innerHTML = '<li class="empty-msg">No songs in playlist! Paste a YouTube URL above.</li>';
       trackTitle.textContent = "No Song Selected";
-      trackArtist.textContent = "Tap '+ Add' to begin";
+      trackArtist.textContent = "Paste YouTube link or add file";
       audio.src = "";
+      if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
       return;
     }
 
@@ -490,8 +723,10 @@
       li.className = `song-item ${idx === currentIndex ? 'active' : ''}`;
       li.onclick = () => loadSongByIndex(idx, true);
 
+      const icon = song.type === 'youtube' ? '🎬' : '🎵';
+
       li.innerHTML = `
-        <span class="song-name">${idx + 1}. ${song.name}</span>
+        <span class="song-name">${idx + 1}. ${icon} ${song.name}</span>
         <button class="menu-btn" onclick="event.stopPropagation(); toggleMenu('${song.id}')" title="Options">
           <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
         </button>
@@ -519,7 +754,9 @@
   });
 
   function deleteCloudSong(id){
-    db.ref("shared_songs/" + id).remove();
+    if(confirm("Kya aap sach mein ye gana permanently delete karna chahte hain?")){
+      db.ref("shared_songs/" + id).remove();
+    }
   }
 
   function loadSongByIndex(idx, autoPlay = true){
@@ -530,14 +767,38 @@
     currentIndex = idx;
     const song = songsList[currentIndex];
 
-    audio.src = song.audioData;
     trackTitle.textContent = song.name;
     trackArtist.textContent = `Song ${currentIndex + 1} of ${songsList.length}`;
+    progFill.style.width = '0%';
+    curTimeEl.textContent = '0:00';
+    durTimeEl.textContent = '0:00';
 
     renderPlaylistUI();
 
-    if(autoPlay){
-      audio.play().catch(()=>{});
+    if(song.type === 'youtube'){
+      currentMode = 'youtube';
+      audio.pause();
+      audio.src = '';
+
+      if(isYtReady && ytPlayer && ytPlayer.loadVideoById){
+        if(autoPlay){
+          ytPlayer.loadVideoById(song.videoId);
+          ytPlayer.playVideo();
+        } else {
+          ytPlayer.cueVideoById(song.videoId);
+        }
+      } else {
+        pendingVideoId = song.videoId;
+      }
+    } else {
+      currentMode = 'audio';
+      if(ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
+      stopYouTubeTracker();
+
+      audio.src = song.audioData;
+      if(autoPlay){
+        audio.play().catch(()=>{});
+      }
     }
   }
 
@@ -552,16 +813,31 @@
   }
 
   function togglePlay(){
-    if(!audio.src && songsList.length > 0){
-      loadSongByIndex(0, true);
-      return;
-    }
-    if(!audio.src) return;
+    if(songsList.length === 0) return;
 
-    if(audio.paused){
-      audio.play();
+    if(currentMode === 'youtube'){
+      if(isYtReady && ytPlayer && ytPlayer.getPlayerState){
+        const state = ytPlayer.getPlayerState();
+        if(state === YT.PlayerState.PLAYING){
+          ytPlayer.pauseVideo();
+        } else {
+          ytPlayer.playVideo();
+        }
+      } else {
+        loadSongByIndex(currentIndex, true);
+      }
     } else {
-      audio.pause();
+      if(!audio.src && songsList.length > 0){
+        loadSongByIndex(0, true);
+        return;
+      }
+      if(!audio.src) return;
+
+      if(audio.paused){
+        audio.play();
+      } else {
+        audio.pause();
+      }
     }
   }
 
@@ -573,17 +849,21 @@
   }
 
   audio.addEventListener('play', ()=>{
-    playIcon.innerHTML = '<rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect>';
-    artIcon.classList.add('playing');
+    if(currentMode === 'audio'){
+      playIcon.innerHTML = '<rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect>';
+      artIcon.classList.add('playing');
+    }
   });
 
   audio.addEventListener('pause', ()=>{
-    playIcon.innerHTML = '<path d="M8 5v14l11-7z"></path>';
-    artIcon.classList.remove('playing');
+    if(currentMode === 'audio'){
+      playIcon.innerHTML = '<path d="M8 5v14l11-7z"></path>';
+      artIcon.classList.remove('playing');
+    }
   });
 
   audio.addEventListener('timeupdate', ()=>{
-    if(audio.duration){
+    if(currentMode === 'audio' && audio.duration){
       const percent = (audio.currentTime / audio.duration) * 100;
       progFill.style.width = percent + '%';
       curTimeEl.textContent = fmt(audio.currentTime);
@@ -596,7 +876,11 @@
   progBar.addEventListener('click', (e)=>{
     const rect = progBar.getBoundingClientRect();
     const ratio = (e.clientX - rect.left) / rect.width;
-    if(audio.duration){
+    
+    if(currentMode === 'youtube' && ytPlayer && ytPlayer.getDuration){
+      const targetTime = ratio * ytPlayer.getDuration();
+      ytPlayer.seekTo(targetTime, true);
+    } else if(currentMode === 'audio' && audio.duration){
       audio.currentTime = ratio * audio.duration;
     }
   });
