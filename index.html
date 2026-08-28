@@ -97,7 +97,7 @@
     box-shadow:0 0 10px #22c55e;
   }
 
-  /* Slide-out Left Drawer / Menu */
+  /* Slide-out Left Drawer */
   .drawer-overlay{
     position: fixed;
     top:0; left:0; width:100vw; height:100vh;
@@ -116,7 +116,7 @@
     top: 0; left: 0;
     width: min(82vw, 320px);
     height: 100vh;
-    background: rgba(18, 12, 24, 0.92);
+    background: rgba(18, 12, 24, 0.94);
     border-right: 1px solid var(--ios-glass-border);
     backdrop-filter: blur(36px) saturate(200%);
     -webkit-backdrop-filter: blur(36px) saturate(200%);
@@ -202,9 +202,8 @@
     color: #fff;
     cursor: pointer;
   }
-  .app-download-card:active{ transform: scale(0.97); }
 
-  /* Add Song / URL Bar Card */
+  /* Add Song Card */
   .url-card{
     width: var(--safe-w);
     background: var(--ios-glass);
@@ -219,10 +218,7 @@
     margin-bottom: 14px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 1px 1px var(--ios-highlight);
   }
-  .url-input-row{
-    display: flex;
-    gap: 8px;
-  }
+  .url-input-row{ display: flex; gap: 8px; }
   .url-input{
     flex: 1;
     background: rgba(255,255,255,0.08);
@@ -277,7 +273,7 @@
   }
   .url-submit-btn:active{ transform: scale(0.94); }
 
-  /* Music Player Card */
+  /* Player Card */
   .player{
     width:var(--safe-w);
     background: var(--ios-glass);
@@ -291,20 +287,11 @@
   }
   .player-top{ display:flex; align-items:center; gap:14px; position:relative; }
 
-  /* Album Art Disc with Neon Pulse Aura */
-  .art-wrapper{
-    position: relative;
-    width: 60px; height: 60px;
-    flex-shrink: 0;
-  }
+  .art-wrapper{ position: relative; width: 60px; height: 60px; flex-shrink: 0; }
   .art-aura{
-    position: absolute;
-    inset: -4px;
-    border-radius: 50%;
+    position: absolute; inset: -4px; border-radius: 50%;
     background: radial-gradient(circle, var(--sunset-orange), transparent 70%);
-    opacity: 0;
-    filter: blur(8px);
-    transition: opacity 0.4s ease;
+    opacity: 0; filter: blur(8px); transition: opacity 0.4s ease;
   }
   .art-aura.active{ opacity: 0.9; animation: auraPulse 2s infinite ease-in-out; }
   @keyframes auraPulse {
@@ -316,8 +303,7 @@
     width: 100%; height: 100%; border-radius:50%;
     background:url('https://i.postimg.cc/L4G45cGW/file-0000000058ec8211a0f84031c053e7b6.png') center top / cover no-repeat;
     border: 2px solid var(--ios-glass-border);
-    position: relative;
-    z-index: 2;
+    position: relative; z-index: 2;
     box-shadow: 0 8px 24px rgba(0,0,0,0.4), inset 0 1px 2px #fff;
   }
   .art.playing{ animation: spin 9s linear infinite; }
@@ -348,12 +334,8 @@
   .tag-badge.private{ background: rgba(244, 184, 96, 0.2); color: var(--sunset-gold); }
 
   .like-btn{
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.5);
-    cursor: pointer;
-    padding: 6px;
-    border-radius: 50%;
+    background: none; border: none; color: rgba(255,255,255,0.5);
+    cursor: pointer; padding: 6px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     transition: color 0.2s, transform 0.15s;
   }
@@ -382,17 +364,13 @@
 
   .controls-row{
     display:flex; align-items:center; justify-content:space-between;
-    padding: 0 6px;
-    margin-top:16px;
+    padding: 0 6px; margin-top:16px;
   }
   .ctrl-mini{
-    background: none; border: none;
-    color: rgba(255,255,255,0.55);
-    cursor: pointer; padding: 6px;
-    transition: all 0.2s;
+    background: none; border: none; color: rgba(255,255,255,0.55);
+    cursor: pointer; padding: 6px; transition: all 0.2s;
   }
   .ctrl-mini.active{ color: var(--sunset-gold); }
-  .ctrl-mini:active{ transform: scale(0.9); }
   .ctrl-mini svg{ width: 18px; height: 18px; }
 
   .track-btn{
@@ -422,7 +400,7 @@
   .ctl.play:active{ transform: scale(0.92); }
   .ctl.play svg{ width:22px; height:22px; }
 
-  /* Playlist Card & Search Filter */
+  /* Playlist Card */
   .playlist-card{
     width:var(--safe-w);
     background: var(--ios-glass);
@@ -434,6 +412,7 @@
     display: flex;
     flex-direction: column;
     box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 1px var(--ios-highlight);
+    position: relative;
   }
   .playlist-header{
     display:flex; align-items:center; justify-content:space-between;
@@ -441,11 +420,63 @@
     padding-bottom:10px;
     border-bottom:1px solid rgba(255,255,255,0.08);
   }
-  
-  .search-filter-box{
-    margin-top: 10px;
-    position: relative;
+  .header-actions{
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
+  .header-btn{
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--cream);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .header-btn.active{
+    background: var(--sunset-gold);
+    color: #111;
+  }
+
+  /* Bulk Delete Action Bar */
+  .bulk-bar{
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 107, 107, 0.15);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    border-radius: 12px;
+    padding: 8px 12px;
+    margin-top: 10px;
+  }
+  .bulk-bar.active{ display: flex; }
+  .bulk-select-all{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: var(--cream);
+    cursor: pointer;
+  }
+  .bulk-delete-btn{
+    background: #ff5252;
+    border: none;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .bulk-delete-btn:active{ transform: scale(0.95); }
+  .bulk-delete-btn svg{ width: 14px; height: 14px; }
+
+  .search-filter-box{ margin-top: 10px; position: relative; }
   .search-input{
     width: 100%;
     background: rgba(255,255,255,0.06);
@@ -469,8 +500,9 @@
     display:flex;
     flex-direction:column;
     gap:8px;
-    max-height:200px;
+    max-height:220px;
     overflow-y:auto;
+    padding-bottom: 20px;
   }
   .song-item{
     display:flex;
@@ -492,10 +524,25 @@
     border: 1px solid rgba(255, 138, 76, 0.4);
     border-left: 3px solid var(--sunset-gold);
   }
+
+  .song-left{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 80%;
+  }
+  .song-checkbox{
+    display: none;
+    width: 16px; height: 16px;
+    accent-color: var(--sunset-orange);
+    cursor: pointer;
+  }
+  .song-checkbox.active{ display: block; }
+
   .song-info{
     display: flex;
     flex-direction: column;
-    max-width: 74%;
+    min-width: 0;
   }
   .song-name{
     font-size:12px;
@@ -514,30 +561,34 @@
     display: flex;
     align-items: center;
     gap: 4px;
+    position: relative;
   }
 
   .menu-btn{
-    background:none; border:none; color:var(--cream);
-    opacity:0.75; cursor:pointer; padding:4px 6px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    color:var(--cream);
+    opacity:0.9; cursor:pointer; padding:6px;
     display:flex; align-items:center; justify-content:center;
-    border-radius:6px;
+    border-radius:8px;
   }
-  .menu-btn:hover{ opacity:1; background:rgba(255,255,255,0.15); }
+  .menu-btn:hover{ opacity:1; background:rgba(255,255,255,0.2); }
   .menu-btn svg{ width:16px; height:16px; }
 
+  /* 3-Dot Dropdown Menu Fixed Placement & Visibility */
   .dropdown-menu{
     display:none;
     position:absolute;
-    right:10px;
-    top:36px;
-    background: rgba(20, 12, 26, 0.96);
+    right: 0;
+    top: 32px;
+    background: rgba(26, 16, 36, 0.98);
     border: 1px solid var(--ios-glass-border);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.8), inset 0 1px 1px var(--ios-highlight);
-    border-radius: 14px;
-    z-index: 99;
-    min-width: 155px;
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.9), inset 0 1px 1px var(--ios-highlight);
+    border-radius: 12px;
+    z-index: 999;
+    min-width: 145px;
     overflow: hidden;
   }
   .dropdown-menu.show{ display:block; }
@@ -554,9 +605,9 @@
     gap:8px;
     cursor:pointer;
   }
-  .dropdown-item:hover{ background:rgba(255,255,255,0.1); }
-  .dropdown-item.delete{ color:#ff6b6b; }
-  .dropdown-item.delete:hover{ background:rgba(255,107,107,0.2); }
+  .dropdown-item:hover{ background:rgba(255,255,255,0.12); }
+  .dropdown-item.delete{ color:#ff5252; font-weight: 500; }
+  .dropdown-item.delete:hover{ background:rgba(255,82,82,0.2); }
   .dropdown-item svg{ width:14px; height:14px; }
 
   .empty-msg{
@@ -583,7 +634,7 @@
 <div id="ytPlayerContainer"><div id="ytPlayer"></div></div>
 <input type="file" id="audioFile" accept="audio/*" style="display:none;" onchange="uploadAudioCloud(event)">
 
-<!-- Left Slide-out Drawer Overlay & Container -->
+<!-- Left Drawer -->
 <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
 <div class="drawer" id="sideDrawer">
   <div class="drawer-profile">
@@ -633,7 +684,7 @@
   </div>
 </div>
 
-<!-- Top Navigation Bar -->
+<!-- Top Bar -->
 <div class="top-header">
   <button class="icon-btn" onclick="toggleDrawer()" title="Menu">
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
@@ -647,7 +698,7 @@
   </button>
 </div>
 
-<!-- Add Song / Playlist Link Card -->
+<!-- URL Add Card -->
 <div class="url-card">
   <div class="url-input-row">
     <input type="text" id="directUrlInput" class="url-input" placeholder="Paste YouTube Video or Playlist Link...">
@@ -664,7 +715,7 @@
 
 <div id="uploadStatus">Processing...</div>
 
-<!-- Music Player Card -->
+<!-- Music Player -->
 <div class="player">
   <div class="player-top">
     <div class="art-wrapper">
@@ -689,7 +740,6 @@
     <span class="t end" id="durTime">0:00</span>
   </div>
 
-  <!-- Player Controls (Spotify Style) -->
   <div class="controls-row">
     <button class="ctrl-mini" id="shuffleBtn" onclick="toggleShuffle()" title="Shuffle">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
@@ -709,16 +759,33 @@
   </div>
 </div>
 
-<!-- Playlist Card with Search -->
+<!-- Playlist Card with Multi-Select Bulk Actions -->
 <div class="playlist-card">
   <div class="playlist-header">
     <span id="currentPlaylistTitle">ALL PLAYLIST TRACKS</span>
-    <span id="playlistCount">0 Tracks</span>
+    <div class="header-actions">
+      <button class="header-btn" id="selectModeBtn" onclick="toggleSelectMode()">Select</button>
+      <span id="playlistCount">0 Tracks</span>
+    </div>
   </div>
+
+  <!-- Multi Delete Action Toolbar -->
+  <div class="bulk-bar" id="bulkBar">
+    <label class="bulk-select-all">
+      <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)">
+      <span>Select All</span>
+    </label>
+    <button class="bulk-delete-btn" onclick="deleteSelectedSongs()">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+      <span id="bulkDeleteLabel">Delete</span>
+    </button>
+  </div>
+
   <div class="search-filter-box">
     <svg class="search-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
     <input type="text" id="playlistSearch" class="search-input" placeholder="Search track in this playlist..." oninput="filterSongs()">
   </div>
+  
   <ul class="song-list" id="songList">
     <li class="empty-msg">Loading songs...</li>
   </ul>
@@ -736,7 +803,6 @@
     if (btn) btn.style.display = 'none';
   }
 
-  // Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyAOGQHVfSFDImcjLUO8o_ntnSg3HCoZWXc",
     authDomain: "songabuzar.firebaseapp.com",
@@ -751,26 +817,27 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
-  // State
   let publicSongs = [];
   let privateSongs = JSON.parse(localStorage.getItem('abuzar_private_songs') || '[]');
   let likedSongIds = JSON.parse(localStorage.getItem('abuzar_liked_ids') || '[]');
   
-  let currentFilter = 'all'; // 'all', 'public', 'private', 'liked'
+  let currentFilter = 'all';
   let displayedSongs = [];
   let currentIndex = 0;
-  let currentMode = 'audio'; // 'audio' or 'youtube'
+  let currentMode = 'audio';
   
   let isAddPrivate = false;
   let isShuffle = false;
-  let isRepeat = false; // false (off) or true (repeat current track)
+  let isRepeat = false;
+
+  let isSelectMode = false;
+  let selectedSongIds = new Set();
 
   let ytPlayer = null;
   let ytProgressTimer = null;
   let isYtReady = false;
   let pendingVideoId = null;
 
-  // DOM Elements
   const audio = document.getElementById('mainAudio');
   const playBtn = document.getElementById('playBtn');
   const playIcon = document.getElementById('playIcon');
@@ -792,8 +859,11 @@
   const likeIcon = document.getElementById('likeIcon');
   const shuffleBtn = document.getElementById('shuffleBtn');
   const repeatBtn = document.getElementById('repeatBtn');
+  const selectModeBtn = document.getElementById('selectModeBtn');
+  const bulkBar = document.getElementById('bulkBar');
+  const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+  const bulkDeleteLabel = document.getElementById('bulkDeleteLabel');
 
-  // Drawer Control
   function toggleDrawer(){
     document.getElementById('sideDrawer').classList.toggle('open');
     document.getElementById('drawerOverlay').classList.toggle('open');
@@ -806,7 +876,6 @@
     document.getElementById('privacyDesc').textContent = isPrivate ? 'Saved only on this device' : 'Shared with everyone';
   }
 
-  // Switch between All / Public / Private / Liked
   function switchPlaylistFilter(filter){
     currentFilter = filter;
     document.querySelectorAll('.drawer-item').forEach(el => el.classList.remove('active'));
@@ -823,6 +892,7 @@
     activePlaylistBadge.textContent = filter.toUpperCase();
     document.getElementById('playlistSearch').value = '';
 
+    exitSelectMode();
     toggleDrawer();
     buildDisplayedList();
     renderPlaylistUI();
@@ -844,7 +914,6 @@
       displayedSongs = all;
     }
 
-    // Update Drawer Badges
     document.getElementById('badge-all').textContent = all.length;
     document.getElementById('badge-public').textContent = publicSongs.length;
     document.getElementById('badge-private').textContent = privateSongs.length;
@@ -860,7 +929,6 @@
     renderPlaylistUI();
   }
 
-  // Firebase Realtime Listener for Public Songs
   db.ref("shared_songs").on("value", (snapshot) => {
     const data = snapshot.val();
     publicSongs = [];
@@ -876,7 +944,6 @@
     }
   });
 
-  // Extractors
   function extractYouTubeID(url) {
     if (!url) return null;
     const cleanUrl = url.trim();
@@ -893,7 +960,6 @@
     return match ? match[1] : null;
   }
 
-  // YouTube API
   function onYouTubeIframeAPIReady() {
     ytPlayer = new YT.Player('ytPlayer', {
       height: '100%',
@@ -957,7 +1023,6 @@
     if (ytProgressTimer) clearInterval(ytProgressTimer);
   }
 
-  // Add Songs (Public or Private)
   async function submitDirectURL(){
     const input = document.getElementById('directUrlInput');
     const url = input.value.trim();
@@ -1071,10 +1136,8 @@
     reader.readAsDataURL(file);
   }
 
-  // Toggle Song Privacy (Public <-> Private)
   function toggleSongPrivacy(id, currentPrivacy){
     if(currentPrivacy){
-      // Convert Private to Public
       const song = privateSongs.find(s => s.id === id);
       if(song && confirm("Is private song ko Public (Shared Cloud) banana chahte hain?")){
         const newObj = { ...song };
@@ -1088,7 +1151,6 @@
         });
       }
     } else {
-      // Convert Public to Private
       const song = publicSongs.find(s => s.id === id);
       if(song && confirm("Is song ko Public se hata kar apna Private banana chahte hain?")){
         const privObj = { ...song, isPrivate: true };
@@ -1102,7 +1164,7 @@
     }
   }
 
-  // Delete Song
+  // Single Song Delete
   function deleteSong(id, isPrivate){
     if(confirm("Kya aap is song ko permanently delete karna chahte hain?")){
       if(isPrivate){
@@ -1116,7 +1178,88 @@
     }
   }
 
-  // Like / Favorite Control
+  // Multi-Select / Bulk Delete Controls
+  function toggleSelectMode(){
+    isSelectMode = !isSelectMode;
+    selectedSongIds.clear();
+    selectModeBtn.classList.toggle('active', isSelectMode);
+    selectModeBtn.textContent = isSelectMode ? 'Cancel' : 'Select';
+    bulkBar.classList.toggle('active', isSelectMode);
+    selectAllCheckbox.checked = false;
+    updateBulkDeleteBtn();
+    renderPlaylistUI();
+  }
+
+  function exitSelectMode(){
+    isSelectMode = false;
+    selectedSongIds.clear();
+    selectModeBtn.classList.remove('active');
+    selectModeBtn.textContent = 'Select';
+    bulkBar.classList.remove('active');
+  }
+
+  function toggleSongSelection(id, e){
+    e.stopPropagation();
+    if(selectedSongIds.has(id)){
+      selectedSongIds.delete(id);
+    } else {
+      selectedSongIds.add(id);
+    }
+    selectAllCheckbox.checked = selectedSongIds.size === displayedSongs.length && displayedSongs.length > 0;
+    updateBulkDeleteBtn();
+  }
+
+  function toggleSelectAll(cb){
+    if(cb.checked){
+      displayedSongs.forEach(s => selectedSongIds.add(s.id));
+    } else {
+      selectedSongIds.clear();
+    }
+    updateBulkDeleteBtn();
+    renderPlaylistUI();
+  }
+
+  function updateBulkDeleteBtn(){
+    const count = selectedSongIds.size;
+    bulkDeleteLabel.textContent = count > 0 ? `Delete (${count})` : 'Delete';
+  }
+
+  async function deleteSelectedSongs(){
+    if(selectedSongIds.size === 0){
+      alert("Pehle delete karne ke liye songs select karein!");
+      return;
+    }
+
+    if(!confirm(`Kya aap select kiye huye ${selectedSongIds.size} gaane delete karna chahte hain?`)){
+      return;
+    }
+
+    uploadStatus.style.display = 'block';
+    uploadStatus.textContent = 'Selected songs delete ho rahe hain...';
+
+    const idsToDelete = Array.from(selectedSongIds);
+    let updates = {};
+
+    idsToDelete.forEach(id => {
+      if(id.startsWith('priv_')){
+        privateSongs = privateSongs.filter(s => s.id !== id);
+      } else {
+        updates["shared_songs/" + id] = null;
+      }
+    });
+
+    localStorage.setItem('abuzar_private_songs', JSON.stringify(privateSongs));
+
+    if(Object.keys(updates).length > 0){
+      await db.ref().update(updates);
+    }
+
+    uploadStatus.style.display = 'none';
+    exitSelectMode();
+    buildDisplayedList();
+    renderPlaylistUI();
+  }
+
   function toggleLikeCurrentSong(){
     if(displayedSongs.length === 0) return;
     const song = displayedSongs[currentIndex];
@@ -1163,30 +1306,43 @@
     displayedSongs.forEach((song, idx) => {
       const li = document.createElement('li');
       li.className = `song-item ${idx === currentIndex ? 'active' : ''}`;
-      li.onclick = () => loadSongByIndex(idx, true);
+      
+      li.onclick = () => {
+        if(isSelectMode){
+          const cb = li.querySelector('.song-checkbox');
+          cb.checked = !cb.checked;
+          toggleSongSelection(song.id, { stopPropagation: () => {} });
+        } else {
+          loadSongByIndex(idx, true);
+        }
+      };
 
       const icon = song.type === 'youtube' ? '🎬' : '🎵';
       const privacyLabel = song.isPrivate ? '🔒 Private' : '🌐 Public';
+      const isChecked = selectedSongIds.has(song.id);
 
       li.innerHTML = `
-        <div class="song-info">
-          <span class="song-name">${idx + 1}. ${icon} ${song.name}</span>
-          <span class="song-subtag">${privacyLabel}</span>
+        <div class="song-left">
+          <input type="checkbox" class="song-checkbox ${isSelectMode ? 'active' : ''}" ${isChecked ? 'checked' : ''} onclick="toggleSongSelection('${song.id}', event)">
+          <div class="song-info">
+            <span class="song-name">${idx + 1}. ${icon} ${song.name}</span>
+            <span class="song-subtag">${privacyLabel}</span>
+          </div>
         </div>
         <div class="song-actions">
           <button class="menu-btn" onclick="event.stopPropagation(); toggleMenu('${song.id}')" title="Options">
             <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
           </button>
-        </div>
-        <div class="dropdown-menu" id="menu-${song.id}">
-          <button class="dropdown-item" onclick="event.stopPropagation(); toggleSongPrivacy('${song.id}', ${song.isPrivate})">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
-            ${song.isPrivate ? 'Make Public' : 'Make Private'}
-          </button>
-          <button class="dropdown-item delete" onclick="event.stopPropagation(); deleteSong('${song.id}', ${song.isPrivate})">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-            Delete Song
-          </button>
+          <div class="dropdown-menu" id="menu-${song.id}">
+            <button class="dropdown-item" onclick="event.stopPropagation(); toggleSongPrivacy('${song.id}', ${song.isPrivate})">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+              <span>${song.isPrivate ? 'Make Public' : 'Make Private'}</span>
+            </button>
+            <button class="dropdown-item delete" onclick="event.stopPropagation(); deleteSong('${song.id}', ${song.isPrivate})">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+              <span>Delete Song</span>
+            </button>
+          </div>
         </div>
       `;
       songListEl.appendChild(li);
@@ -1205,7 +1361,6 @@
     document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
   });
 
-  // Load and Play Track
   function loadSongByIndex(idx, autoPlay = true){
     if(displayedSongs.length === 0) return;
     if(idx >= displayedSongs.length) idx = 0;
