@@ -501,12 +501,24 @@
     flex:1; height:5px; border-radius:99px;
     background:var(--ios-glass-btn);
     position:relative; cursor:pointer;
+    overflow: hidden;
+  }
+  .bar-buffer{
+    position: absolute;
+    left: 0; top: 0;
+    height: 100%; width: 0%;
+    background: rgba(255, 255, 255, 0.22);
+    border-radius: 99px;
+    transition: width 0.2s linear;
+    z-index: 1;
   }
   .bar-fill{
+    position: relative;
     height:100%; width:0%;
     background:linear-gradient(90deg, var(--sunset-gold), var(--sunset-orange));
     border-radius:99px;
     box-shadow:0 0 10px rgba(255,138,76,0.6);
+    z-index: 2;
   }
 
   .controls-row{
@@ -556,14 +568,14 @@
 </head>
 <body>
 
-<audio id="mainAudio" preload="metadata"></audio>
+<audio id="mainAudio" preload="auto"></audio>
 <div id="ytPlayerContainer"><div id="ytPlayer"></div></div>
 <input type="file" id="audioFile" accept="audio/*" style="display:none;" onchange="uploadAudioCloud(event)">
 
-<!-- Left Slide-out Drawer (No empty space at bottom) -->
+<!-- Left Slide-out Drawer -->
 <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
 <div class="drawer" id="sideDrawer">
-  
+
   <div class="drawer-header">
     <div class="drawer-profile">
       <div class="drawer-avatar"></div>
@@ -578,7 +590,7 @@
   </div>
 
   <div class="drawer-body">
-    
+
     <!-- 1. Add Song Card -->
     <div class="drawer-card">
       <div class="drawer-card-title">
@@ -618,7 +630,7 @@
       </button>
     </div>
 
-    <!-- 3. Playlist Tracks (Expands to bottom) -->
+    <!-- 3. Playlist Tracks -->
     <div class="drawer-playlist-card">
       <div class="drawer-card-title">
         <span id="currentPlaylistTitle">ALL PLAYLIST TRACKS</span>
@@ -692,7 +704,10 @@
 
   <div class="prog-row">
     <span class="t" id="curTime">0:00</span>
-    <div class="bar" id="progBar"><div class="bar-fill" id="progFill"></div></div>
+    <div class="bar" id="progBar">
+      <div class="bar-buffer" id="bufferFill"></div>
+      <div class="bar-fill" id="progFill"></div>
+    </div>
     <span class="t end" id="durTime">0:00</span>
   </div>
 
@@ -742,7 +757,7 @@
     const isLight = document.body.classList.contains('light-theme');
     const icon = document.getElementById('themeIcon');
     if (isLight) {
-      icon.innerHTML = '<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>';
+      icon.innerHTML = '<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 000-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>';
     } else {
       icon.innerHTML = '<path d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 01-4.4 2.26 5.403 5.403 0 01-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/>';
     }
@@ -766,12 +781,12 @@
   let publicSongs = [];
   let privateSongs = JSON.parse(localStorage.getItem('abuzar_private_songs') || '[]');
   let likedSongIds = JSON.parse(localStorage.getItem('abuzar_liked_ids') || '[]');
-  
+
   let currentFilter = 'all';
   let displayedSongs = [];
   let currentIndex = 0;
   let currentMode = 'audio';
-  
+
   let isAddPrivate = false;
   let isShuffle = false;
   let isRepeat = false;
@@ -784,11 +799,18 @@
   let isYtReady = false;
   let pendingVideoId = null;
 
+  // Pre-buffer System Variables
+  let isPreBuffering = false;
+  const TARGET_BUFFER_SECONDS = 10;
+  let preloaderAudio = new Audio();
+  preloaderAudio.preload = "auto";
+
   const audio = document.getElementById('mainAudio');
   const playBtn = document.getElementById('playBtn');
   const playIcon = document.getElementById('playIcon');
   const progBar = document.getElementById('progBar');
   const progFill = document.getElementById('progFill');
+  const bufferFill = document.getElementById('bufferFill');
   const curTimeEl = document.getElementById('curTime');
   const durTimeEl = document.getElementById('durTime');
   const trackTitle = document.getElementById('trackTitle');
@@ -958,6 +980,9 @@
           progFill.style.width = ((cur / dur) * 100) + '%';
           curTimeEl.textContent = fmt(cur);
           durTimeEl.textContent = fmt(dur);
+          if (ytPlayer.getVideoLoadedFraction) {
+            bufferFill.style.width = (ytPlayer.getVideoLoadedFraction() * 100) + '%';
+          }
         }
       }
     }, 500);
@@ -1244,7 +1269,7 @@
     displayedSongs.forEach((song, idx) => {
       const li = document.createElement('li');
       li.className = `song-item ${idx === currentIndex ? 'active' : ''}`;
-      
+
       li.onclick = () => {
         if(isSelectMode){
           const cb = li.querySelector('.song-checkbox');
@@ -1300,6 +1325,35 @@
     document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
   });
 
+  // --- AUDIO BUFFER HELPER ---
+  function getBufferedAhead(audioEl) {
+    if (!audioEl || !audioEl.buffered || audioEl.buffered.length === 0) return 0;
+    const cur = audioEl.currentTime;
+    for (let i = 0; i < audioEl.buffered.length; i++) {
+      if (audioEl.buffered.start(i) <= cur && cur <= audioEl.buffered.end(i)) {
+        return audioEl.buffered.end(i) - cur;
+      }
+    }
+    return 0;
+  }
+
+  function updateBufferBar() {
+    if (currentMode === 'audio' && audio.duration && audio.buffered.length > 0) {
+      const end = audio.buffered.end(audio.buffered.length - 1);
+      const ratio = (end / audio.duration) * 100;
+      bufferFill.style.width = Math.min(ratio, 100) + '%';
+    }
+  }
+
+  function preloadNextTrack() {
+    const nextIdx = (currentIndex + 1) % displayedSongs.length;
+    const nextTrack = displayedSongs[nextIdx];
+    if (nextTrack && nextTrack.type === 'audio' && nextTrack.audioData) {
+      preloaderAudio.src = nextTrack.audioData;
+      preloaderAudio.load();
+    }
+  }
+
   function loadSongByIndex(idx, autoPlay = true){
     if(displayedSongs.length === 0) return;
     if(idx >= displayedSongs.length) idx = 0;
@@ -1314,6 +1368,7 @@
     trackPrivacyTag.className = `tag-badge ${song.isPrivate ? 'private' : 'public'}`;
 
     progFill.style.width = '0%';
+    bufferFill.style.width = '0%';
     curTimeEl.textContent = '0:00';
     durTimeEl.textContent = '0:00';
 
@@ -1324,6 +1379,7 @@
       currentMode = 'youtube';
       audio.pause();
       audio.src = '';
+      isPreBuffering = false;
 
       if(isYtReady && ytPlayer && ytPlayer.loadVideoById){
         if(autoPlay){
@@ -1341,9 +1397,40 @@
       stopYouTubeTracker();
 
       audio.src = song.audioData;
+      audio.load();
+
       if(autoPlay){
-        audio.play().catch(()=>{});
+        isPreBuffering = true;
+        artAura.classList.add('active'); // Preload visual pulse
+
+        const bufferCheckHandler = () => {
+          const ahead = getBufferedAhead(audio);
+          // 10 Second load ya song chhota ho toh play start karein
+          if (ahead >= TARGET_BUFFER_SECONDS || (audio.duration && ahead >= audio.duration - 0.5)) {
+            isPreBuffering = false;
+            audio.removeEventListener('progress', bufferCheckHandler);
+            audio.play().catch(()=>{});
+          }
+        };
+
+        audio.addEventListener('progress', bufferCheckHandler);
+        audio.addEventListener('canplaythrough', () => {
+          if (isPreBuffering) {
+            isPreBuffering = false;
+            audio.play().catch(()=>{});
+          }
+        }, { once: true });
+
+        // Fallback: Agar buffer event delay ho toh 600ms baad play try karo
+        setTimeout(() => {
+          if (isPreBuffering) {
+            isPreBuffering = false;
+            audio.play().catch(()=>{});
+          }
+        }, 600);
       }
+
+      preloadNextTrack();
     }
   }
 
@@ -1384,7 +1471,22 @@
       if(!audio.src) return;
 
       if(audio.paused){
-        audio.play();
+        const ahead = getBufferedAhead(audio);
+        if (ahead < 2 && audio.duration && (audio.duration - audio.currentTime > 5)) {
+          isPreBuffering = true;
+          artAura.classList.add('active');
+          const onProgress = () => {
+            if (getBufferedAhead(audio) >= 4 || !isPreBuffering) {
+              isPreBuffering = false;
+              audio.removeEventListener('progress', onProgress);
+              audio.play().catch(()=>{});
+            }
+          };
+          audio.addEventListener('progress', onProgress);
+          setTimeout(() => { if(isPreBuffering) { isPreBuffering = false; audio.play().catch(()=>{}); } }, 700);
+        } else {
+          audio.play().catch(()=>{});
+        }
       } else {
         audio.pause();
       }
@@ -1407,18 +1509,43 @@
   });
 
   audio.addEventListener('pause', ()=>{
-    if(currentMode === 'audio'){
+    if(currentMode === 'audio' && !isPreBuffering){
       playIcon.innerHTML = '<path d="M8 5v14l11-7z"></path>';
       artIcon.classList.remove('playing');
       artAura.classList.remove('active');
     }
   });
 
+  audio.addEventListener('progress', ()=>{
+    updateBufferBar();
+  });
+
+  // Slow Internet Protection: Timeupdate Buffer Guard
   audio.addEventListener('timeupdate', ()=>{
     if(currentMode === 'audio' && audio.duration){
       progFill.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
       curTimeEl.textContent = fmt(audio.currentTime);
       durTimeEl.textContent = fmt(audio.duration);
+      updateBufferBar();
+
+      const ahead = getBufferedAhead(audio);
+      const remainingSong = audio.duration - audio.currentTime;
+
+      // Agar slow net ke kaaran buffer crash hone lage
+      if (ahead < 1.2 && remainingSong > 3 && !audio.paused && !isPreBuffering) {
+        isPreBuffering = true;
+        audio.pause();
+        artAura.classList.add('active');
+
+        const resumeWhenBuffered = () => {
+          if (getBufferedAhead(audio) >= 5 || audio.duration - audio.currentTime <= 5) {
+            isPreBuffering = false;
+            audio.removeEventListener('progress', resumeWhenBuffered);
+            audio.play().catch(()=>{});
+          }
+        };
+        audio.addEventListener('progress', resumeWhenBuffered);
+      }
     }
   });
 
