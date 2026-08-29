@@ -1569,3 +1569,26 @@
 </script>
 </body>
 </html>
+// --- BACKGROUND PLAYBACK & LOCK SCREEN CONTROLS ---
+function updateMediaSession(song) {
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: song.name,
+      artist: 'Abuzar Khan Music',
+      album: 'Pro Player',
+      artwork: [
+        { src: 'https://i.postimg.cc/L4G45cGW/file-0000000058ec8211a0f84031c053e7b6.png', sizes: '512x512', type: 'image/png' }
+      ]
+    });
+
+    navigator.mediaSession.setActionHandler('play', () => togglePlay());
+    navigator.mediaSession.setActionHandler('pause', () => togglePlay());
+    navigator.mediaSession.setActionHandler('previoustrack', () => prevSong());
+    navigator.mediaSession.setActionHandler('nexttrack', () => nextSong());
+    navigator.mediaSession.setActionHandler('seekto', (details) => {
+      if (details.seekTime && audio.duration) {
+        audio.currentTime = details.seekTime;
+      }
+    });
+  }
+}
