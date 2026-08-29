@@ -277,7 +277,7 @@
     border-radius: 8px;
   }
 
-  /* Playlist Container */
+  /* Playlist Container - Expands to bottom with No Empty Space */
   .drawer-playlist-card{
     background: var(--card-bg);
     border: 1px solid var(--ios-glass-border);
@@ -410,7 +410,7 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     border-radius: 10px;
     z-index: 999;
-    min-width: 145px;
+    min-width: 135px;
     overflow: hidden;
   }
   .dropdown-menu.show{ display: block; }
@@ -1105,49 +1105,6 @@
     reader.readAsDataURL(file);
   }
 
-  // --- DOWNLOAD SONG SYSTEM ---
-  function downloadSong(id, e){
-    if(e) e.stopPropagation();
-    const song = displayedSongs.find(s => s.id === id) || displayedSongs[currentIndex];
-    if(!song) return;
-
-    if(song.type === 'youtube'){
-      alert("YouTube audio download nahi ho sakta. Upload kiye hue tracks download karein.");
-      return;
-    }
-
-    const a = document.createElement('a');
-    a.href = song.audioData;
-    a.download = `${song.name}.mp3`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }
-
-  // --- BACKGROUND & LOCK SCREEN NOTIFICATION CONTROLS ---
-  function updateMediaSession(song){
-    if ('mediaSession' in navigator) {
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: song.name,
-        artist: 'Abuzar Khan Music',
-        album: 'Pro Player',
-        artwork: [
-          { src: 'https://i.postimg.cc/L4G45cGW/file-0000000058ec8211a0f84031c053e7b6.png', sizes: '512x512', type: 'image/png' }
-        ]
-      });
-
-      navigator.mediaSession.setActionHandler('play', () => togglePlay());
-      navigator.mediaSession.setActionHandler('pause', () => togglePlay());
-      navigator.mediaSession.setActionHandler('previoustrack', () => prevSong());
-      navigator.mediaSession.setActionHandler('nexttrack', () => nextSong());
-      navigator.mediaSession.setActionHandler('seekto', (details) => {
-        if (details.seekTime && audio.duration) {
-          audio.currentTime = details.seekTime;
-        }
-      });
-    }
-  }
-
   function toggleSongPrivacy(id, currentPrivacy){
     if(currentPrivacy){
       const song = privateSongs.find(s => s.id === id);
@@ -1324,7 +1281,7 @@
         }
       };
 
-      const icon = song.type === 'youtube' ? '🎵';
+      const icon = song.type === 'youtube' ? '🎬' : '🎵';
       const privacyLabel = song.isPrivate ? '🔒 Private' : '🌐 Public';
       const isChecked = selectedSongIds.has(song.id);
 
@@ -1341,10 +1298,6 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
           </button>
           <div class="dropdown-menu" id="menu-${song.id}">
-            <button class="dropdown-item" onclick="event.stopPropagation(); downloadSong('${song.id}', event)">
-              <svg viewBox="0 0 24 24" fill="currentColor" style="width:13px;height:13px;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-              <span>Download MP3</span>
-            </button>
             <button class="dropdown-item" onclick="event.stopPropagation(); toggleSongPrivacy('${song.id}', ${song.isPrivate})">
               <svg viewBox="0 0 24 24" fill="currentColor" style="width:13px;height:13px;"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
               <span>${song.isPrivate ? 'Make Public' : 'Make Private'}</span>
@@ -1421,7 +1374,6 @@
 
     updateLikeUI();
     renderPlaylistUI();
-    updateMediaSession(song); // Lock Screen & Background controls update
 
     if(song.type === 'youtube'){
       currentMode = 'youtube';
@@ -1449,10 +1401,11 @@
 
       if(autoPlay){
         isPreBuffering = true;
-        artAura.classList.add('active');
+        artAura.classList.add('active'); // Preload visual pulse
 
         const bufferCheckHandler = () => {
           const ahead = getBufferedAhead(audio);
+          // 10 Second load ya song chhota ho toh play start karein
           if (ahead >= TARGET_BUFFER_SECONDS || (audio.duration && ahead >= audio.duration - 0.5)) {
             isPreBuffering = false;
             audio.removeEventListener('progress', bufferCheckHandler);
@@ -1468,6 +1421,7 @@
           }
         }, { once: true });
 
+        // Fallback: Agar buffer event delay ho toh 600ms baad play try karo
         setTimeout(() => {
           if (isPreBuffering) {
             isPreBuffering = false;
@@ -1566,7 +1520,7 @@
     updateBufferBar();
   });
 
-  // Slow Internet Buffer Guard
+  // Slow Internet Protection: Timeupdate Buffer Guard
   audio.addEventListener('timeupdate', ()=>{
     if(currentMode === 'audio' && audio.duration){
       progFill.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
@@ -1577,6 +1531,7 @@
       const ahead = getBufferedAhead(audio);
       const remainingSong = audio.duration - audio.currentTime;
 
+      // Agar slow net ke kaaran buffer crash hone lage
       if (ahead < 1.2 && remainingSong > 3 && !audio.paused && !isPreBuffering) {
         isPreBuffering = true;
         audio.pause();
