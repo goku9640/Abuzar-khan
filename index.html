@@ -10,7 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -20,7 +19,7 @@
       --gold:#f4b860;
       --purple:#8b5cf6;
       --bg:#080611;
-      --panel:rgba(20,14,30,.72);
+      --panel:rgba(20,14,30,.75);
       --panel2:rgba(255,255,255,.055);
       --border:rgba(255,255,255,.14);
       --text:#fff;
@@ -31,7 +30,7 @@
     }
     body.light-theme{
       --bg:#f5f2fa;
-      --panel:rgba(255,255,255,.82);
+      --panel:rgba(255,255,255,.85);
       --panel2:rgba(30,20,50,.055);
       --border:rgba(30,20,50,.12);
       --text:#191226;
@@ -110,41 +109,67 @@
     .actions{display:flex;gap:7px}
     .icon{
       width:40px;height:40px;border-radius:13px;border:1px solid var(--border);background:var(--panel);
-      display:grid;place-items:center;cursor:pointer
+      display:grid;place-items:center;cursor:pointer;color:var(--text);text-decoration:none
     }
+    .icon svg{width:18px;height:18px;fill:currentColor}
     .icon:hover{border-color:var(--gold)}
+    
     .hero{
-      min-height:245px;border-radius:28px;position:relative;overflow:hidden;padding:28px;
-      display:flex;align-items:flex-end;background:
-      linear-gradient(90deg,rgba(8,6,17,.97) 0%,rgba(8,6,17,.75) 46%,rgba(8,6,17,.15) 100%),
-      radial-gradient(circle at 80% 40%,rgba(255,138,76,.35),transparent 34%),#151020
+      min-height:220px;border-radius:28px;position:relative;overflow:hidden;padding:24px;
+      display:flex;align-items:center;background:
+      linear-gradient(90deg,rgba(8,6,17,.98) 0%,rgba(8,6,17,.85) 55%,rgba(8,6,17,.3) 100%),#151020
     }
-    .hero h2{font-size:clamp(25px,4vw,42px);line-height:1.05;margin-bottom:9px}
-    .hero p{font-size:11px;color:var(--muted);max-width:520px}
-    .hero .hero-btn{margin-top:16px;border:0;border-radius:13px;padding:10px 16px;background:linear-gradient(135deg,var(--gold),var(--accent));font-size:11px;font-weight:700;color:#171018;cursor:pointer}
-    .hero-art{position:absolute;right:30px;bottom:-45px;width:250px;height:250px;border-radius:50%;background-size:cover;background-position:center;opacity:.82;box-shadow:0 0 80px rgba(255,138,76,.25)}
+    .hero h2{font-size:clamp(22px,3.8vw,36px);line-height:1.1;margin-bottom:8px}
+    .hero p{font-size:11px;color:var(--muted);max-width:480px}
+    .hero .hero-btn{margin-top:14px;border:0;border-radius:12px;padding:9px 16px;background:linear-gradient(135deg,var(--gold),var(--accent));font-size:11px;font-weight:700;color:#171018;cursor:pointer}
+    .hero-art{
+      position:absolute;right:15px;bottom:-20px;width:190px;height:190px;border-radius:50%;
+      background-size:cover;background-position:center;opacity:.4;box-shadow:0 0 60px rgba(255,138,76,.2);
+      pointer-events:none;
+    }
+    
     .now{
-      border-radius:28px;padding:18px;display:grid;grid-template-columns:130px 1fr;gap:20px;align-items:center
+      border-radius:28px;padding:20px;display:flex;flex-direction:column;gap:16px;
+      min-width:0;
+    }
+    .now-header{
+      display:flex;align-items:center;gap:16px;min-width:0;width:100%;
     }
     .big-art{
-      width:130px;height:130px;border-radius:25px;object-fit:cover;background:linear-gradient(135deg,#2a1937,#0d0914);
-      box-shadow:0 18px 45px rgba(0,0,0,.4)
+      width:90px;height:90px;border-radius:20px;object-fit:cover;flex-shrink:0;
+      background:linear-gradient(135deg,#2a1937,#0d0914);
+      box-shadow:0 10px 25px rgba(0,0,0,.4)
     }
-    .now h3{font-size:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .now .artist{font-size:10px;color:var(--muted);margin-top:4px}
-    .pill{display:inline-block;margin-top:9px;font-size:8px;padding:3px 7px;border-radius:99px;background:rgba(69,223,136,.13);color:var(--success)}
-    .progress{margin-top:18px;display:grid;grid-template-columns:35px 1fr 35px;gap:8px;align-items:center}
-    .time{font-size:9px;color:var(--muted);font-variant-numeric:tabular-nums}.time:last-child{text-align:right}
+    .now-details{min-width:0;flex:1}
+    .now h3{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:3px 0}
+    .now .artist{font-size:10px;color:var(--muted)}
+    .pill{display:inline-block;margin-top:6px;font-size:8px;padding:2px 7px;border-radius:99px;background:rgba(69,223,136,.13);color:var(--success)}
+    
+    .progress{
+      width:100%;display:grid;grid-template-columns:35px 1fr 35px;gap:8px;align-items:center
+    }
+    .time{font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}.time:last-child{text-align:right}
     .bar{height:6px;border-radius:99px;background:rgba(255,255,255,.09);cursor:pointer;overflow:hidden}
     .fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--accent));border-radius:99px;box-shadow:0 0 13px rgba(255,138,76,.55)}
-    .controls{display:flex;align-items:center;justify-content:center;gap:15px;margin-top:17px}
-    .ctrl{border:0;background:transparent;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;cursor:pointer;color:var(--muted);font-size:14px}
+    
+    .controls{
+      display:flex;align-items:center;justify-content:center;gap:12px;width:100%;
+    }
+    .ctrl{
+      border:0;background:transparent;width:38px;height:38px;display:grid;place-items:center;
+      border-radius:50%;cursor:pointer;color:var(--muted);font-size:15px;flex-shrink:0
+    }
     .ctrl:hover,.ctrl.active{color:var(--gold);background:rgba(255,255,255,.06)}
-    .play{width:54px;height:54px;background:linear-gradient(135deg,var(--gold),var(--accent));color:#181018;box-shadow:0 10px 30px rgba(255,138,76,.32);font-size:18px}
-    .volume{display:flex;align-items:center;gap:6px;margin-top:12px;max-width:170px;margin-left:auto;margin-right:auto}
+    .play{width:50px;height:50px;background:linear-gradient(135deg,var(--gold),var(--accent));color:#181018;box-shadow:0 10px 30px rgba(255,138,76,.32);font-size:18px}
+    
+    .volume{display:flex;align-items:center;gap:8px;max-width:180px;margin:0 auto;width:100%}
     .volume input{width:100%;accent-color:var(--accent)}
+    
     .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-    .stat{padding:13px 15px;border-radius:18px}.stat b{font-size:17px}.stat span{display:block;font-size:8px;color:var(--muted);margin-top:2px}
+    .stat{padding:13px 15px;border-radius:18px;min-width:0;overflow:hidden}
+    .stat b{font-size:15px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .stat span{display:block;font-size:8px;color:var(--muted);margin-top:2px}
+    
     .toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:300;background:#18111f;border:1px solid var(--border);padding:10px 15px;border-radius:12px;font-size:10px;transition:.25s}
     .toast.show{opacity:1;transform:translate(-50%,0)}
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,.58);backdrop-filter:blur(8px);z-index:90;opacity:0;visibility:hidden;transition:.25s}
@@ -155,27 +180,22 @@
     @media(max-width:800px){
       .app{display:block;padding:12px 12px 20px}
       .sidebar{
-        position:fixed;left:0;top:0;bottom:0;width:min(90vw,360px);z-index:100;
+        position:fixed;left:0;top:0;bottom:0;width:min(88vw,340px);z-index:100;
         border-radius:0 25px 25px 0;min-height:100dvh;transform:translateX(-105%);transition:.28s
       }
       .sidebar.open{transform:translateX(0)}
       .mobile-menu{display:grid}
-      .topbar{margin-bottom:2px}
-      .hero{min-height:210px;padding:22px}
-      .hero-art{width:190px;height:190px;right:-25px;bottom:-40px}
-      .now{margin-top:14px;grid-template-columns:78px 1fr;gap:13px;padding:14px}
-      .big-art{width:78px;height:78px;border-radius:18px}
-      .now h3{font-size:16px}
+      .topbar{margin-bottom:10px}
+      .hero{min-height:180px;padding:18px}
+      .hero-art{width:130px;height:130px;right:-15px;bottom:-20px;opacity:.25}
+      .hero h2{font-size:24px}
       .stats{margin-top:12px}
       .song-list{max-height:none;flex:1}
     }
-    @media(max-width:450px){
-      .hero-art{opacity:.35}
-      .hero h2{font-size:28px}
-      .controls{gap:7px}
-      .stats{gap:6px}
-      .stat{padding:11px}
-      .stat b{font-size:15px}
+    @media(max-width:400px){
+      .controls{gap:6px}
+      .ctrl{width:34px;height:34px}
+      .play{width:46px;height:46px}
     }
   </style>
 </head>
@@ -226,18 +246,20 @@
 
     <main class="main">
       <div class="topbar">
-        <div>
+        <div style="display:flex;align-items:center">
           <button class="icon mobile-menu" id="openMenu" aria-label="Open menu">☰</button>
           <span style="font-size:10px;color:var(--muted);margin-left:7px">NOW PLAYING • <b id="activePlaylistBadge" style="color:var(--gold)">ALL</b></span>
         </div>
         <div class="actions">
           <button class="icon" id="themeBtn" title="Theme">🌙</button>
-          <a class="icon" href="app.apk" download title="Download Android app" style="text-decoration:none">⬇</a>
+          <a class="icon" href="app.apk" download title="Download Android app">
+            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          </a>
         </div>
       </div>
 
       <section class="hero glass">
-        <div>
+        <div style="position:relative;z-index:2">
           <div style="font-size:9px;color:var(--gold);letter-spacing:1px;margin-bottom:8px">ABUZAR KHAN MUSIC</div>
           <h2>Your music.<br>One beautiful place.</h2>
           <p>Apne songs, YouTube tracks aur playlists ko ek clean, fast aur mobile-friendly player mein manage karo.</p>
@@ -247,32 +269,34 @@
       </section>
 
       <section class="now glass">
-        <img class="big-art" id="bigArt" alt="Album artwork">
-        <div>
-          <div style="font-size:9px;color:var(--gold);letter-spacing:.7px">CURRENT TRACK</div>
-          <h3 id="trackTitle">No Song Selected</h3>
-          <div class="artist" id="artistName">☰ menu se song select karein</div>
-          <span class="pill" id="trackPrivacyTag">PUBLIC</span>
-
-          <div class="progress">
-            <span class="time" id="curTime">0:00</span>
-            <div class="bar" id="progBar"><div class="fill" id="progFill"></div></div>
-            <span class="time" id="durTime">0:00</span>
+        <div class="now-header">
+          <img class="big-art" id="bigArt" alt="Album artwork">
+          <div class="now-details">
+            <div style="font-size:9px;color:var(--gold);letter-spacing:.7px">CURRENT TRACK</div>
+            <h3 id="trackTitle">No Song Selected</h3>
+            <div class="artist" id="artistName">☰ menu se song select karein</div>
+            <span class="pill" id="trackPrivacyTag">PUBLIC</span>
           </div>
+        </div>
 
-          <div class="controls">
-            <button class="ctrl" id="shuffleBtn" title="Shuffle">🔀</button>
-            <button class="ctrl" id="prevBtn" title="Previous">⏮</button>
-            <button class="ctrl play" id="playBtn" title="Play/Pause">▶</button>
-            <button class="ctrl" id="nextBtn" title="Next">⏭</button>
-            <button class="ctrl" id="repeatBtn" title="Repeat">🔁</button>
-            <button class="ctrl" id="likeBtn" title="Like">🤍</button>
-          </div>
+        <div class="progress">
+          <span class="time" id="curTime">0:00</span>
+          <div class="bar" id="progBar"><div class="fill" id="progFill"></div></div>
+          <span class="time" id="durTime">0:00</span>
+        </div>
 
-          <div class="volume">
-            <span style="font-size:11px">🔊</span>
-            <input id="volumeSlider" type="range" min="0" max="1" step=".01" value=".9">
-          </div>
+        <div class="controls">
+          <button class="ctrl" id="shuffleBtn" title="Shuffle">🔀</button>
+          <button class="ctrl" id="prevBtn" title="Previous">⏮</button>
+          <button class="ctrl play" id="playBtn" title="Play/Pause">▶</button>
+          <button class="ctrl" id="nextBtn" title="Next">⏭</button>
+          <button class="ctrl" id="repeatBtn" title="Repeat">🔁</button>
+          <button class="ctrl" id="likeBtn" title="Like">🤍</button>
+        </div>
+
+        <div class="volume">
+          <span style="font-size:11px">🔊</span>
+          <input id="volumeSlider" type="range" min="0" max="1" step=".01" value=".9">
         </div>
       </section>
 
