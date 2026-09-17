@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Daily English Journey</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:Arial,sans-serif;
+    overflow-x:hidden;
+
+    background:
+    linear-gradient(
+        to bottom,
+        #f7b267 0%,
+        #f6c270 35%,
+        #f8d99b 65%,
+        #e8b56a 100%
+    );
+}
+
+
+/* =========================
+   GOLDEN HOUR SCENE
+========================= */
+
+.scene{
+    position:relative;
+    height:270px;
+    overflow:hidden;
+}
+
+.sun{
+    position:absolute;
+    width:95px;
+    height:95px;
+    border-radius:50%;
+    background:#fff1a8;
+    left:50%;
+    bottom:55px;
+    transform:translateX(-50%);
+
+    box-shadow:
+        0 0 30px #fff0a0,
+        0 0 70px rgba(255,230,120,.7);
+}
+
+.ground{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:75px;
+    background:#667b3e;
+    border-radius:50% 50% 0 0;
+}
+
+
+/* =========================
+   TREE
+========================= */
+
+.tree{
+    position:absolute;
+    left:-15px;
+    bottom:45px;
+}
+
+.trunk{
+    width:35px;
+    height:170px;
+    background:#654321;
+    border-radius:20px;
+    transform:rotate(5deg);
+}
+
+.leaves{
+    position:absolute;
+    width:120px;
+    height:100px;
+    background:#3f6334;
+    border-radius:50%;
+    left:-45px;
+    top:-45px;
+    animation:leavesMove 4s ease-in-out infinite;
+}
+
+.leaves.two{
+    width:90px;
+    height:80px;
+    left:35px;
+    top:-20px;
+    animation-delay:1s;
+}
+
+.leaves.three{
+    width:75px;
+    height:70px;
+    left:-5px;
+    top:-85px;
+    animation-delay:2s;
+}
+
+@keyframes leavesMove{
+
+    0%,100%{
+        transform:rotate(0deg);
+    }
+
+    50%{
+        transform:rotate(5deg);
+    }
+
+}
+
+
+/* =========================
+   FALLING LEAVES
+========================= */
+
+.floating-leaf{
+    position:absolute;
+    width:14px;
+    height:7px;
+    background:#547b3b;
+    border-radius:100%;
+    animation:leafFloat 7s linear infinite;
+}
+
+.leaf1{
+    left:15%;
+    top:40%;
+}
+
+.leaf2{
+    left:70%;
+    top:25%;
+    animation-delay:2s;
+}
+
+.leaf3{
+    left:85%;
+    top:55%;
+    animation-delay:4s;
+}
+
+@keyframes leafFloat{
+
+    0%{
+        transform:translate(0,0) rotate(0);
+        opacity:0;
+    }
+
+    20%{
+        opacity:1;
+    }
+
+    100%{
+        transform:translate(-120px,180px) rotate(180deg);
+        opacity:0;
+    }
+
+}
+
+
+/* =========================
+   SWING
+========================= */
+
+.swing{
+    position:absolute;
+    right:18%;
+    bottom:65px;
+    width:120px;
+    height:160px;
+}
+
+.rope{
+    position:absolute;
+    width:3px;
+    height:100px;
+    background:#55412d;
+    top:0;
+}
+
+.rope.left{
+    left:25px;
+}
+
+.rope.right{
+    right:25px;
+}
+
+.swing-seat{
+    position:absolute;
+    bottom:5px;
+    left:15px;
+    width:90px;
+    height:12px;
+    background:#70452a;
+    border-radius:5px;
+    animation:swinging 2.8s ease-in-out infinite;
+}
+
+.child{
+    position:absolute;
+    bottom:17px;
+    left:45px;
+    width:30px;
+    height:65px;
+    animation:swinging 2.8s ease-in-out infinite;
+}
+
+.child .head{
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:#503522;
+    margin:auto;
+}
+
+.child .body{
+    width:18px;
+    height:32px;
+    background:#355c7d;
+    margin:2px auto;
+    border-radius:8px;
+}
+
+@keyframes swinging{
+
+    0%,100%{
+        transform:rotate(-6deg);
+    }
+
+    50%{
+        transform:rotate(6deg);
+    }
+
+}
+
+
+/* =========================
+   MAIN CARD
+========================= */
+
+.container{
+    width:min(92%,520px);
+    margin:-20px auto 30px;
+    position:relative;
+
+    background:rgba(255,255,255,.88);
+
+    backdrop-filter:blur(12px);
+
+    padding:24px;
+
+    border-radius:25px;
+
+    box-shadow:
+        0 15px 40px rgba(80,45,15,.25);
+}
+
+.title{
+    text-align:center;
+    color:#563b27;
+    margin:0;
+    font-size:25px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#80664f;
+    margin:8px 0 20px;
+    font-size:14px;
+}
+
+.date{
+    text-align:center;
+    font-size:14px;
+    color:#987354;
+    margin-bottom:18px;
+}
+
+
+/* =========================
+   TASKS
+========================= */
+
+.task-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.task{
+    display:flex;
+    align-items:center;
+    gap:13px;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    background:rgba(255,248,235,.85);
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.task:hover{
+    transform:translateY(-2px);
+}
+
+.task input{
+    display:none;
+}
+
+.box{
+    width:25px;
+    height:25px;
+
+    border:2px solid #9b7957;
+
+    border-radius:8px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:.25s;
+}
+
+.task input:checked + .box{
+    background:#5c8a45;
+    border-color:#5c8a45;
+}
+
+.task input:checked + .box::after{
+    content:"✓";
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+}
+
+.task-text{
+    color:#554332;
+    font-size:16px;
+    transition:.25s;
+}
+
+.task input:checked ~ .task-text{
+    color:#999;
+    text-decoration:line-through;
+}
+
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress-area{
+    margin-top:22px;
+}
+
+.progress-text{
+    display:flex;
+    justify-content:space-between;
+
+    font-size:13px;
+    color:#765a40;
+
+    margin-bottom:7px;
+}
+
+.progress-bar{
+    height:10px;
+    background:#eadbc7;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+
+    background:linear-gradient(
+        90deg,
+        #d99b52,
+        #e8b85f
+    );
+
+    border-radius:20px;
+
+    transition:.4s;
+}
+
+.message{
+    text-align:center;
+    margin-top:18px;
+    color:#73583f;
+    font-size:14px;
+}
+
+
+/* =========================
+   STATS
+========================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+
+    margin-top:22px;
+}
+
+.stat{
+    background:rgba(255,248,235,.9);
+    border-radius:17px;
+    padding:16px;
+    text-align:center;
+}
+
+.stat-icon{
+    font-size:25px;
+}
+
+.stat-number{
+    font-size:22px;
+    font-weight:bold;
+    color:#5c432d;
+    margin-top:5px;
+}
+
+.stat-label{
+    font-size:12px;
+    color:#8b7057;
+    margin-top:4px;
+}
+
+
+/* =========================
+   30 DAY SECTION
+========================= */
+
+.history{
+    margin-top:22px;
+}
+
+.history-title{
+    text-align:center;
+    color:#563b27;
+    font-size:18px;
+    margin-bottom:12px;
+}
+
+.calendar{
+    display:grid;
+    grid-template-columns:repeat(10,1fr);
+    gap:6px;
+}
+
+.day{
+    aspect-ratio:1;
+    border-radius:8px;
+
+    background:#eadbc7;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:10px;
+    color:#80664f;
+}
+
+.day.complete{
+    background:#5c8a45;
+    color:white;
+}
+
+.day.today{
+    outline:2px solid #d99b52;
+    outline-offset:2px;
+}
+
+.day.partial{
+    background:#e3b965;
+    color:white;
+}
+
+
+/* =========================
+   RESET BUTTON
+========================= */
+
+.clear-history{
+    display:block;
+    margin:18px auto 0;
+
+    border:none;
+    background:transparent;
+
+    color:#a06e4d;
+
+    font-size:12px;
+
+    cursor:pointer;
+}
+
+.clear-history:hover{
+    text-decoration:underline;
+}
+
+
+/* Mobile */
+
+@media(max-width:500px){
+
+    .scene{
+        height:230px;
+    }
+
+    .swing{
+        right:8%;
+    }
+
+    .container{
+        padding:20px;
+    }
+
+    .calendar{
+        gap:5px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     GOLDEN HOUR SCENE
+========================= -->
+
+<div class="scene">
+
+    <div class="sun"></div>
+
+    <div class="tree">
+
+        <div class="trunk"></div>
+
+        <div class="leaves"></div>
+        <div class="leaves two"></div>
+        <div class="leaves three"></div>
+
+    </div>
+
+    <div class="floating-leaf leaf1"></div>
+    <div class="floating-leaf leaf2"></div>
+    <div class="floating-leaf leaf3"></div>
+
+
+    <div class="swing">
+
+        <div class="rope left"></div>
+        <div class="rope right"></div>
+
+        <div class="child">
+
+            <div class="head"></div>
+            <div class="body"></div>
+
+        </div>
+
+        <div class="swing-seat"></div>
+
+    </div>
+
+    <div class="ground"></div>
+
+</div>
+
+
+
+<!-- =========================
+     STUDY TRACKER
+========================= -->
+
+<div class="container">
+
+    <h1 class="title">
+        📚 My English Journey
+    </h1>
+
+    <p class="subtitle">
+        Small practice every day 🌅
+    </p>
+
+    <div class="date" id="today"></div>
+
+
+    <!-- TASKS -->
+
+    <div class="task-list">
+
+        <label class="task">
+
+            <input type="checkbox" id="vocabulary">
+
+            <span class="box"></span>
+
+            <span class="task-text">
+                Vocabulary
+            </span>
+
+        </label>
+
+
+        <label class="task">
+
+            <input type="checkbox" id="listening">
+
+            <span class="box"></span>
+
+            <span class="task-text">
+                Listening
+            </span>
+
+        </label>
+
+
+        <label class="task">
+
+            <input type="checkbox" id="speaking">
+
+            <span class="box"></span>
+
+            <span class="task-text">
+                Speaking
+            </span>
+
+        </label>
+
+
+        <label class="task">
+
+            <input type="checkbox" id="writing">
+
+            <span class="box"></span>
+
+            <span class="task-text">
+                Writing
+            </span>
+
+        </label>
+
+    </div>
+
+
+    <!-- TODAY'S PROGRESS -->
+
+    <div class="progress-area">
+
+        <div class="progress-text">
+
+            <span>Today's Progress</span>
+
+            <span id="progressNumber">
+                0 / 4
+            </span>
+
+        </div>
+
+        <div class="progress-bar">
+
+            <div
+                class="progress-fill"
+                id="progressFill">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="message" id="message">
+
+        Start your English practice today 🌱
+
+    </div>
+
+
+    <!-- =========================
+         STATS
+    ========================= -->
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                🔥
+            </div>
+
+            <div
+                class="stat-number"
+                id="streak">
+                0
+            </div>
+
+            <div class="stat-label">
+                Day Streak
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                🎯
+            </div>
+
+            <div
+                class="stat-number"
+                id="daysCompleted">
+                0
+            </div>
+
+            <div class="stat-label">
+                Days Completed
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         30 DAY PROGRESS
+    ========================= -->
+
+    <div class="history">
+
+        <div class="history-title">
+            📅 Last 30 Days
+        </div>
+
+        <div
+            class="calendar"
+            id="calendar">
+        </div>
+
+    </div>
+
+
+    <button
+        class="clear-history"
+        id="clearHistory">
+
+        Clear all saved progress
+
+    </button>
+
+</div>
+
+
+
+<script>
+
+/* ==================================================
+   DAILY ENGLISH TRACKER
+================================================== */
+
+
+/* Tasks */
+
+const tasks = [
+    "vocabulary",
+    "listening",
+    "speaking",
+    "writing"
+];
+
+
+/* ==================================================
+   DATE FUNCTIONS
+================================================== */
+
+function getDateKey(date = new Date()){
+
+    return (
+        date.getFullYear() +
+        "-" +
+        String(date.getMonth() + 1).padStart(2,"0") +
+        "-" +
+        String(date.getDate()).padStart(2,"0")
+    );
+
+}
+
+
+function getDateFromKey(key){
+
+    const parts = key.split("-");
+
+    return new Date(
+        Number(parts[0]),
+        Number(parts[1]) - 1,
+        Number(parts[2])
+    );
+
+}
+
+
+/* Today's date */
+
+const today = new Date();
+
+const todayKey = getDateKey(today);
+
+
+document.getElementById("today").textContent =
+    today.toLocaleDateString(
+        "en-IN",
+        {
+            weekday:"long",
+            day:"numeric",
+            month:"long",
+            year:"numeric"
+        }
+    );
+
+
+/* ==================================================
+   STORAGE
+==================================================
+
+   Instead of saving only today's checkbox,
+   every date gets its own record.
+
+   Example:
+
+   englishHistory = {
+
+       "2026-09-16":{
+           vocabulary:true,
+           listening:true,
+           speaking:false,
+           writing:false
+       },
+
+       "2026-09-17":{
+           vocabulary:false,
+           listening:false,
+           speaking:false,
+           writing:false
+       }
+
+   }
+
+================================================== */
+
+
+function getHistory(){
+
+    try{
+
+        return JSON.parse(
+            localStorage.getItem("englishHistory")
+        ) || {};
+
+    }
+
+    catch(error){
+
+        return {};
+
+    }
+
+}
+
+
+function saveHistory(history){
+
+    localStorage.setItem(
+        "englishHistory",
+        JSON.stringify(history)
+    );
+
+}
+
+
+/* ==================================================
+   GET TODAY'S DATA
+================================================== */
+
+function getTodayData(){
+
+    const history = getHistory();
+
+    if(!history[todayKey]){
+
+        history[todayKey] = {
+            vocabulary:false,
+            listening:false,
+            speaking:false,
+            writing:false
+        };
+
+        saveHistory(history);
+
+    }
+
+    return history[todayKey];
+
+}
+
+
+/* ==================================================
+   LOAD TODAY
+================================================== */
+
+function loadToday(){
+
+    const data = getTodayData();
+
+    tasks.forEach(task => {
+
+        document.getElementById(task).checked =
+            data[task] === true;
+
+    });
+
+}
+
+
+/* ==================================================
+   SAVE TODAY
+================================================== */
+
+function saveToday(){
+
+    const history = getHistory();
+
+    history[todayKey] = {};
+
+    tasks.forEach(task => {
+
+        history[todayKey][task] =
+            document.getElementById(task).checked;
+
+    });
+
+    saveHistory(history);
+
+}
+
+
+/* ==================================================
+   UPDATE TODAY'S PROGRESS
+================================================== */
+
+function updateProgress(){
+
+    let completed = 0;
+
+
+    tasks.forEach(task => {
+
+        if(
+            document.getElementById(task).checked
+        ){
+
+            completed++;
+
+        }
+
+    });
+
+
+    const percentage =
+        (completed / tasks.length) * 100;
+
+
+    document.getElementById(
+        "progressNumber"
+    ).textContent =
+        completed + " / " + tasks.length;
+
+
+    document.getElementById(
+        "progressFill"
+    ).style.width =
+        percentage + "%";
+
+
+    const message =
+        document.getElementById("message");
+
+
+    if(completed === 0){
+
+        message.textContent =
+            "Start your English practice today 🌱";
+
+    }
+
+    else if(completed === 1){
+
+        message.textContent =
+            "Good start! Keep going 💪";
+
+    }
+
+    else if(completed === 2){
+
+        message.textContent =
+            "Halfway there! 🔥";
+
+    }
+
+    else if(completed === 3){
+
+        message.textContent =
+            "Almost done! 🌟";
+
+    }
+
+    else{
+
+        message.textContent =
+            "🎉 Today's English practice is complete!";
+
+    }
+
+
+    updateStats();
+
+}
+
+
+/* ==================================================
+   CHECKBOX EVENTS
+================================================== */
+
+tasks.forEach(task => {
+
+    const checkbox =
+        document.getElementById(task);
+
+
+    checkbox.addEventListener(
+        "change",
+        function(){
+
+            saveToday();
+
+            updateProgress();
+
+            renderCalendar();
+
+        }
+    );
+
+});
+
+
+/* ==================================================
+   CALCULATE COMPLETED DAYS
+================================================== */
+
+function isDayComplete(data){
+
+    if(!data){
+        return false;
+    }
+
+    return tasks.every(
+        task => data[task] === true
+    );
+
+}
+
+
+/* ==================================================
+   STREAK
+================================================== */
+
+function calculateStreak(){
+
+    const history = getHistory();
+
+    let streak = 0;
+
+    let date = new Date();
+
+
+    /*
+       If today's tasks are not complete,
+       check from yesterday for the existing streak.
+    */
+
+    if(!isDayComplete(history[todayKey])){
+
+        date.setDate(
+            date.getDate() - 1
+        );
+
+    }
+
+
+    while(true){
+
+        const key = getDateKey(date);
+
+        if(
+            isDayComplete(history[key])
+        ){
+
+            streak++;
+
+            date.setDate(
+                date.getDate() - 1
+            );
+
+        }
+
+        else{
+
+            break;
+
+        }
+
+    }
+
+
+    /*
+       If today is complete, today's completed
+       day is included automatically.
+    */
+
+    return streak;
+
+}
+
+
+/* ==================================================
+   COMPLETED DAYS
+================================================== */
+
+function countCompletedDays(){
+
+    const history = getHistory();
+
+    let count = 0;
+
+
+    Object.keys(history).forEach(key => {
+
+        if(
+            isDayComplete(history[key])
+        ){
+
+            count++;
+
+        }
+
+    });
+
+
+    return count;
+
+}
+
+
+/* ==================================================
+   UPDATE STATS
+================================================== */
+
+function updateStats(){
+
+    document.getElementById(
+        "streak"
+    ).textContent =
+        calculateStreak();
+
+
+    document.getElementById(
+        "daysCompleted"
+    ).textContent =
+        countCompletedDays();
+
+}
+
+
+/* ==================================================
+   30 DAY CALENDAR
+================================================== */
+
+function renderCalendar(){
+
+    const calendar =
+        document.getElementById("calendar");
+
+
+    calendar.innerHTML = "";
+
+
+    const history = getHistory();
+
+
+    /*
+       Show last 30 days,
+       oldest → newest.
+    */
+
+    for(let i = 29; i >= 0; i--){
+
+        const date = new Date();
+
+        date.setDate(
+            date.getDate() - i
+        );
+
+
+        const key =
+            getDateKey(date);
+
+
+        const data =
+            history[key];
+
+
+        const day =
+            document.createElement("div");
+
+
+        day.className = "day";
+
+
+        /*
+           Date number
+        */
+
+        day.textContent =
+            date.getDate();
+
+
+        /*
+           Completed
+        */
+
+        if(
+            isDayComplete(data)
+        ){
+
+            day.classList.add(
+                "complete"
+            );
+
+        }
+
+        /*
+           Partially completed
+        */
+
+        else if(data){
+
+            const completed =
+                tasks.filter(
+                    task => data[task] === true
+                ).length;
+
+
+            if(completed > 0){
+
+                day.classList.add(
+                    "partial"
+                );
+
+            }
+
+        }
+
+
+        /*
+           Today's border
+        */
+
+        if(key === todayKey){
+
+            day.classList.add(
+                "today"
+            );
+
+        }
+
+
+        /*
+           Tooltip
+        */
+
+        day.title =
+            date.toLocaleDateString(
+                "en-IN",
+                {
+                    day:"numeric",
+                    month:"short",
+                    year:"numeric"
+                }
+            );
+
+
+        calendar.appendChild(day);
+
+    }
+
+}
+
+
+/* ==================================================
+   CLEAR HISTORY
+================================================== */
+
+document
+    .getElementById("clearHistory")
+    .addEventListener(
+        "click",
+        function(){
+
+            const confirmClear =
+                confirm(
+                    "Are you sure you want to delete ALL saved English progress?"
+                );
+
+
+     
